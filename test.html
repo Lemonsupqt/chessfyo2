@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Dostoevsky Chess</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #0a0a0f;
+            color: #e8e8e8;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #d4af37;
+        }
+        .test {
+            background: #1a1a28;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 3px solid #d4af37;
+        }
+        .pass {
+            border-left-color: #2ecc71;
+        }
+        .fail {
+            border-left-color: #e74c3c;
+        }
+        .status {
+            font-weight: bold;
+        }
+        button {
+            background: #d4af37;
+            color: #0a0a0f;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #f0c850;
+        }
+    </style>
+</head>
+<body>
+    <h1>♟️ Dostoevsky Chess - System Tests</h1>
+    <p>This page tests that all dependencies and features are working correctly.</p>
+    
+    <div id="tests"></div>
+    
+    <h2>Manual Tests</h2>
+    <button onclick="testPeerJS()">Test PeerJS Connection</button>
+    <button onclick="testStockfish()">Test Stockfish AI</button>
+    <button onclick="window.location.href='index.html'">Go to Game</button>
+    
+    <div id="manualResults"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.0/dist/peerjs.min.js"></script>
+    <script src="stockfish.js"></script>
+    
+    <script>
+        const testsDiv = document.getElementById('tests');
+        const manualDiv = document.getElementById('manualResults');
+        
+        function addTest(name, result, details = '') {
+            const div = document.createElement('div');
+            div.className = 'test ' + (result ? 'pass' : 'fail');
+            div.innerHTML = `
+                <span class="status">[${result ? '✓ PASS' : '✗ FAIL'}]</span> ${name}
+                ${details ? `<br><small>${details}</small>` : ''}
+            `;
+            testsDiv.appendChild(div);
+        }
+        
+        function addManualResult(text) {
+            const div = document.createElement('div');
+            div.className = 'test';
+            div.textContent = text;
+            manualDiv.appendChild(div);
+        }
+        
+        // Run tests
+        function runTests() {
+            // Test 1: Chess.js
+            try {
+                const chess = new Chess();
+                const isValid = chess.move('e4') !== null;
+                addTest('Chess.js Library', isValid, 'Chess logic engine loaded successfully');
+            } catch (e) {
+                addTest('Chess.js Library', false, 'Error: ' + e.message);
+            }
+            
+            // Test 2: PeerJS
+            try {
+                const peerAvailable = typeof Peer !== 'undefined';
+                addTest('PeerJS Library', peerAvailable, 'P2P multiplayer library available');
+            } catch (e) {
+                addTest('PeerJS Library', false, 'Error: ' + e.message);
+            }
+            
+            // Test 3: Web Workers
+            const workersSupported = typeof Worker !== 'undefined';
+            addTest('Web Workers Support', workersSupported, 'Required for Stockfish AI');
+            
+            // Test 4: Stockfish
+            try {
+                const stockfishAvailable = typeof createStockfishWorker !== 'undefined';
+                addTest('Stockfish Integration', stockfishAvailable, 'AI chess engine available');
+            } catch (e) {
+                addTest('Stockfish Integration', false, 'Note: AI will use fallback mode');
+            }
+            
+            // Test 5: Web Audio
+            const audioSupported = typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined';
+            addTest('Web Audio API', audioSupported, 'For sound effects');
+            
+            // Test 6: LocalStorage
+            try {
+                localStorage.setItem('test', 'test');
+                localStorage.removeItem('test');
+                addTest('LocalStorage', true, 'For saving settings');
+            } catch (e) {
+                addTest('LocalStorage', false, 'Settings won\'t persist');
+            }
+            
+            // Test 7: Fetch API (for Stockfish CDN)
+            const fetchSupported = typeof fetch !== 'undefined';
+            addTest('Fetch API', fetchSupported, 'For loading external resources');
+            
+            // Summary
+            const summary = document.createElement('div');
+            summary.style.marginTop = '20px';
+            summary.style.padding = '20px';
+            summary.style.background = '#1a1a28';
+            summary.style.borderRadius = '5px';
+            summary.innerHTML = '<h3 style="color: #d4af37;">Test Summary</h3><p>All critical systems are ' + 
+                (document.querySelectorAll('.fail').length === 0 ? 'operational ✓' : 'mostly operational (some features may not work)') + 
+                '</p>';
+            testsDiv.appendChild(summary);
+        }
+        
+        function testPeerJS() {
+            manualDiv.innerHTML = '<div class="test">Testing PeerJS connection...</div>';
+            try {
+                const peer = new Peer();
+                peer.on('open', (id) => {
+                    addManualResult('✓ PeerJS connection successful! ID: ' + id);
+                    peer.destroy();
+                });
+                peer.on('error', (err) => {
+                    addManualResult('✗ PeerJS error: ' + err.type);
+                });
+            } catch (e) {
+                addManualResult('✗ Error: ' + e.message);
+            }
+        }
+        
+        function testStockfish() {
+            manualDiv.innerHTML = '<div class="test">Testing Stockfish AI...</div>';
+            try {
+                if (typeof createStockfishWorker !== 'undefined') {
+                    const sf = createStockfishWorker();
+                    sf.postMessage('uci');
+                    sf.onmessage = function(e) {
+                        if (e.data.includes('uciok')) {
+                            addManualResult('✓ Stockfish AI is working!');
+                            sf.terminate();
+                        }
+                    };
+                    setTimeout(() => {
+                        addManualResult('ℹ Stockfish loaded via CDN (may take a moment)');
+                    }, 1000);
+                } else {
+                    addManualResult('ℹ Stockfish will use fallback AI mode');
+                }
+            } catch (e) {
+                addManualResult('✗ Error: ' + e.message);
+            }
+        }
+        
+        // Run tests on load
+        window.addEventListener('load', runTests);
+    </script>
+</body>
+</html>

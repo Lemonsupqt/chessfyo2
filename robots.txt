@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://YOUR-USERNAME.github.io/REPO-NAME/sitemap.xml
+
+# Dostoevsky Chess - A philosophical chess experience
+# Feel free to crawl and index

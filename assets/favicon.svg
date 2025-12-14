@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0c850;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#d4af37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c4a028;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="48" fill="#0a0a0f" stroke="url(#goldGradient)" stroke-width="4"/>
+  
+  <!-- Chess King piece simplified -->
+  <g transform="translate(50,50)">
+    <!-- Cross on top -->
+    <rect x="-2" y="-35" width="4" height="12" fill="url(#goldGradient)"/>
+    <rect x="-6" y="-31" width="12" height="4" fill="url(#goldGradient)"/>
+    
+    <!-- Crown -->
+    <path d="M -12,-20 L -8,-15 L -4,-18 L 0,-14 L 4,-18 L 8,-15 L 12,-20 L 10,-10 L -10,-10 Z" 
+          fill="url(#goldGradient)"/>
+    
+    <!-- Body -->
+    <path d="M -10,-10 L -12,5 L -10,15 L 10,15 L 12,5 L 10,-10 Z" 
+          fill="url(#goldGradient)"/>
+    
+    <!-- Base -->
+    <ellipse cx="0" cy="15" rx="14" ry="4" fill="url(#goldGradient)"/>
+    <path d="M -14,15 L -16,20 L 16,20 L 14,15 Z" fill="url(#goldGradient)"/>
+  </g>
+</svg>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dostoevsky Chess - A Game of Psychological Warfare</title>
+    <meta name="description" content="Experience chess like never before with Dostoevsky-inspired dark aesthetic. Play online with friends, face Stockfish AI, or local multiplayer. No registration required.">
+    <meta name="keywords" content="chess, online chess, multiplayer chess, Dostoevsky, chess game, play chess, stockfish, AI chess">
+    <meta name="author" content="Dostoevsky Chess">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Dostoevsky Chess - A Game of Psychological Warfare">
+    <meta property="og:description" content="Play chess with friends online or challenge Stockfish AI. Inspired by the dark psychological depths of Dostoevsky's works.">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Dostoevsky Chess">
+    <meta name="twitter:description" content="Chess meets 19th-century Russian literature. Play online, free forever.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="assets/favicon.svg">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="ornamental-border"></div>
+    
+    <!-- Background -->
+    <div class="background-overlay"></div>
+    
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">
+                <span class="title-main">Dostoevsky Chess</span>
+                <span class="title-sub">The Gambit of the Underground Man</span>
+            </h1>
+            <div class="quote-container">
+                <p class="quote" id="quote">"To live without hope is to cease to live."</p>
+                <p class="quote-author">— Fyodor Dostoevsky</p>
+            </div>
+        </header>
+
+        <!-- Main Menu -->
+        <div id="mainMenu" class="menu-screen active">
+            <div class="menu-card">
+                <h2 class="menu-title">Choose Your Torment</h2>
+                <div class="menu-buttons">
+                    <button class="menu-btn primary" onclick="showMode('online')">
+                        <span class="btn-icon">♔</span>
+                        <span class="btn-text">Play Online</span>
+                        <span class="btn-desc">Challenge a friend across the void</span>
+                    </button>
+                    <button class="menu-btn" onclick="showMode('ai')">
+                        <span class="btn-icon">♚</span>
+                        <span class="btn-text">Face the Machine</span>
+                        <span class="btn-desc">Battle against Stockfish AI</span>
+                    </button>
+                    <button class="menu-btn" onclick="showMode('local')">
+                        <span class="btn-icon">♕</span>
+                        <span class="btn-text">Pass & Play</span>
+                        <span class="btn-desc">Local two-player suffering</span>
+                    </button>
+                    <button class="menu-btn" onclick="showSettings()">
+                        <span class="btn-icon">⚙</span>
+                        <span class="btn-text">Settings</span>
+                        <span class="btn-desc">Configure your experience</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Online Mode Setup -->
+        <div id="onlineSetup" class="menu-screen">
+            <div class="menu-card">
+                <h2 class="menu-title">Online Multiplayer</h2>
+                <div class="online-setup">
+                    <div class="setup-option">
+                        <h3>Host a Game</h3>
+                        <p class="setup-desc">Create a game and share your ID</p>
+                        <button class="menu-btn" onclick="hostGame()">Create Game Room</button>
+                        <div id="hostInfo" class="connection-info" style="display:none;">
+                            <p>Your Game ID:</p>
+                            <div class="game-id-container">
+                                <input type="text" id="gameId" readonly>
+                                <button onclick="copyGameId()">Copy</button>
+                            </div>
+                            <p class="info-text">Share this ID with your friend</p>
+                            <div id="waitingMessage" class="waiting">Waiting for opponent...</div>
+                        </div>
+                    </div>
+                    <div class="setup-divider">OR</div>
+                    <div class="setup-option">
+                        <h3>Join a Game</h3>
+                        <p class="setup-desc">Enter your friend's Game ID</p>
+                        <input type="text" id="joinGameId" placeholder="Enter Game ID" class="game-input">
+                        <button class="menu-btn" onclick="joinGame()">Join Game</button>
+                    </div>
+                </div>
+                <button class="back-btn" onclick="backToMenu()">← Back</button>
+            </div>
+        </div>
+
+        <!-- AI Mode Setup -->
+        <div id="aiSetup" class="menu-screen">
+            <div class="menu-card">
+                <h2 class="menu-title">Face the Machine</h2>
+                <div class="ai-setup">
+                    <div class="setting-group">
+                        <label>Choose Your Side</label>
+                        <div class="color-choice">
+                            <button class="color-btn" onclick="selectColor('white')" id="whiteBtn">
+                                <span class="piece-icon">♔</span> White
+                            </button>
+                            <button class="color-btn active" onclick="selectColor('black')" id="blackBtn">
+                                <span class="piece-icon">♚</span> Black
+                            </button>
+                            <button class="color-btn" onclick="selectColor('random')" id="randomBtn">
+                                <span class="piece-icon">♟</span> Random
+                            </button>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <label>AI Difficulty</label>
+                        <div class="difficulty-slider">
+                            <input type="range" min="1" max="20" value="5" id="difficultySlider" oninput="updateDifficulty(this.value)">
+                            <div class="difficulty-labels">
+                                <span>Novice</span>
+                                <span id="difficultyValue">Medium (5)</span>
+                                <span>Grandmaster</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="menu-btn primary" onclick="startAIGame()">Begin the Suffering</button>
+                </div>
+                <button class="back-btn" onclick="backToMenu()">← Back</button>
+            </div>
+        </div>
+
+        <!-- Settings -->
+        <div id="settingsScreen" class="menu-screen">
+            <div class="menu-card">
+                <h2 class="menu-title">Settings</h2>
+                <div class="settings-content">
+                    <div class="setting-group">
+                        <label>Sound Effects</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="soundToggle" checked onchange="toggleSound()">
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <label>Move Highlights</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="highlightToggle" checked onchange="toggleHighlights()">
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <label>Board Theme</label>
+                        <select id="boardTheme" onchange="changeBoardTheme(this.value)">
+                            <option value="classic">Classic Dostoevsky</option>
+                            <option value="dark">Underground Dark</option>
+                            <option value="crimson">Crime & Crimson</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="back-btn" onclick="backToMenu()">← Back</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="game-screen">
+            <div class="game-layout">
+                <!-- Left Panel -->
+                <div class="side-panel left-panel">
+                    <div class="panel-section">
+                        <h3 class="panel-title">Game Info</h3>
+                        <div class="game-info">
+                            <div class="info-row">
+                                <span>Mode:</span>
+                                <span id="gameMode">-</span>
+                            </div>
+                            <div class="info-row">
+                                <span>Turn:</span>
+                                <span id="turnIndicator">White</span>
+                            </div>
+                            <div class="info-row" id="statusRow">
+                                <span>Status:</span>
+                                <span id="gameStatus">In Progress</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="panel-section">
+                        <h3 class="panel-title">Captured Pieces</h3>
+                        <div class="captured-pieces">
+                            <div class="captured-group">
+                                <span class="captured-label">White:</span>
+                                <div id="capturedWhite" class="captured-list"></div>
+                            </div>
+                            <div class="captured-group">
+                                <span class="captured-label">Black:</span>
+                                <div id="capturedBlack" class="captured-list"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-section">
+                        <h3 class="panel-title">Philosophical Musings</h3>
+                        <div class="musing-box">
+                            <p id="musingText" class="musing-text">"The degree of civilization in a society can be judged by entering its prisons... or observing its chess games."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chess Board -->
+                <div class="board-container">
+                    <div class="player-info opponent">
+                        <div class="player-name" id="opponentName">Opponent</div>
+                        <div class="player-timer" id="opponentTimer">--:--</div>
+                    </div>
+                    
+                    <div id="chessBoard" class="chess-board"></div>
+                    
+                    <div class="player-info current">
+                        <div class="player-name" id="playerName">You</div>
+                        <div class="player-timer" id="playerTimer">--:--</div>
+                    </div>
+
+                    <div class="board-controls">
+                        <button class="control-btn" onclick="undoMove()" title="Undo">↶</button>
+                        <button class="control-btn" onclick="offerDraw()" title="Offer Draw">½</button>
+                        <button class="control-btn" onclick="resignGame()" title="Resign">⚑</button>
+                        <button class="control-btn" onclick="showMenu()" title="Menu">☰</button>
+                    </div>
+                </div>
+
+                <!-- Right Panel -->
+                <div class="side-panel right-panel">
+                    <div class="panel-section">
+                        <h3 class="panel-title">Move History</h3>
+                        <div id="moveHistory" class="move-history"></div>
+                    </div>
+                    
+                    <div class="panel-section" id="aiAnalysis" style="display:none;">
+                        <h3 class="panel-title">AI Analysis</h3>
+                        <div class="ai-info">
+                            <div class="info-row">
+                                <span>Evaluation:</span>
+                                <span id="evaluation">0.0</span>
+                            </div>
+                            <div class="info-row">
+                                <span>Best Move:</span>
+                                <span id="bestMove">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="gameOverModal" class="modal">
+        <div class="modal-content">
+            <h2 id="gameOverTitle">Game Over</h2>
+            <p id="gameOverMessage"></p>
+            <div class="modal-buttons">
+                <button class="menu-btn" onclick="rematch()">Rematch</button>
+                <button class="menu-btn" onclick="backToMenu()">Main Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p id="loadingText">Initializing the depths of despair...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.0/dist/peerjs.min.js"></script>
+    <script src="stockfish.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
