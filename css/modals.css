@@ -1,0 +1,725 @@
+/* ===============================================
+   DOSTOEVSKY CHESS - Modal Styles
+   Dialogs, popups, and overlay styling
+   =============================================== */
+
+/* Modal Overlay */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md);
+    overflow-y: auto;
+}
+
+.modal.active {
+    display: flex;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Modal Content */
+.modal-content {
+    background: linear-gradient(145deg, 
+        var(--color-bg-medium) 0%, 
+        var(--color-bg-dark) 100%);
+    border: 2px solid var(--color-bg-lighter);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    max-width: 700px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 
+        var(--shadow-large),
+        0 0 40px rgba(201, 162, 39, 0.1);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-content.modal-small {
+    max-width: 400px;
+}
+
+.modal-content.modal-about {
+    max-width: 600px;
+}
+
+.modal-content.modal-gameover {
+    max-width: 500px;
+    text-align: center;
+}
+
+/* Close Button */
+.modal-close {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    width: 36px;
+    height: 36px;
+    background: var(--color-bg-light);
+    border: 1px solid var(--color-bg-lighter);
+    border-radius: 50%;
+    color: var(--color-text-secondary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    background: var(--color-danger);
+    border-color: var(--color-danger);
+    color: var(--color-text-primary);
+}
+
+/* Modal Title */
+.modal-title {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-sm);
+    text-align: center;
+}
+
+.modal-subtitle {
+    font-family: var(--font-accent);
+    font-style: italic;
+    color: var(--color-text-muted);
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+/* ===============================================
+   New Game Modal
+   =============================================== */
+
+.game-modes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+}
+
+.mode-card {
+    background: var(--color-bg-dark);
+    border: 2px solid var(--color-bg-lighter);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    text-align: center;
+}
+
+.mode-card:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-medium), 0 0 20px rgba(201, 162, 39, 0.2);
+}
+
+.mode-card.selected {
+    border-color: var(--color-accent);
+    background: var(--color-bg-medium);
+}
+
+.mode-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.mode-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.mode-card p {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+}
+
+/* Game Options */
+.game-options {
+    border-top: 1px solid var(--color-bg-lighter);
+    padding-top: var(--spacing-xl);
+}
+
+.game-options h3 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+}
+
+.option-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.option-group label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Color Selection */
+.color-select {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.color-btn {
+    flex: 1;
+    padding: var(--spacing-md);
+    background: var(--color-bg-dark);
+    border: 2px solid var(--color-bg-lighter);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.color-btn span {
+    font-size: 1.5rem;
+}
+
+.color-btn:hover {
+    border-color: var(--color-accent-dark);
+}
+
+.color-btn.active {
+    border-color: var(--color-accent);
+    background: var(--color-bg-medium);
+    color: var(--color-text-primary);
+}
+
+/* Difficulty Selection */
+.difficulty-select {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.diff-btn {
+    flex: 1;
+    min-width: 100px;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-bg-dark);
+    border: 2px solid var(--color-bg-lighter);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-align: center;
+}
+
+.diff-btn span {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    color: var(--color-text-primary);
+}
+
+.diff-btn small {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-top: 2px;
+}
+
+.diff-btn:hover {
+    border-color: var(--color-accent-dark);
+}
+
+.diff-btn.active {
+    border-color: var(--color-accent);
+    background: var(--color-bg-medium);
+}
+
+/* Time Selection */
+.time-select {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.time-btn {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-bg-dark);
+    border: 2px solid var(--color-bg-lighter);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.time-btn span {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--color-text-primary);
+}
+
+.time-btn:hover {
+    border-color: var(--color-accent-dark);
+}
+
+.time-btn.active {
+    border-color: var(--color-accent);
+    background: var(--color-bg-medium);
+}
+
+#btn-start-game {
+    width: 100%;
+    margin-top: var(--spacing-lg);
+}
+
+/* ===============================================
+   Online Modal
+   =============================================== */
+
+.online-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.online-create,
+.online-join {
+    text-align: center;
+}
+
+.online-create h3,
+.online-join h3 {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.online-create p,
+.online-join p {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-md);
+}
+
+.online-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: var(--color-text-muted);
+}
+
+.online-divider::before,
+.online-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--color-bg-lighter);
+}
+
+.online-divider span {
+    padding: 0 var(--spacing-md);
+    font-style: italic;
+}
+
+.room-link {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+}
+
+.room-link input {
+    flex: 1;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-bg-dark);
+    border: 1px solid var(--color-bg-lighter);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-primary);
+    font-size: 0.9rem;
+}
+
+#room-code-input {
+    width: 100%;
+    padding: var(--spacing-md);
+    background: var(--color-bg-dark);
+    border: 2px solid var(--color-bg-lighter);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+}
+
+#room-code-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    background: var(--color-bg-dark);
+    border-radius: var(--radius-sm);
+    margin-top: var(--spacing-lg);
+}
+
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-warning);
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.status-indicator.connected {
+    background: var(--color-success);
+    animation: none;
+}
+
+.status-indicator.error {
+    background: var(--color-danger);
+    animation: none;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* ===============================================
+   Settings Modal
+   =============================================== */
+
+.settings-group {
+    margin-bottom: var(--spacing-xl);
+}
+
+.settings-group h3 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--color-accent);
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--color-bg-lighter);
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-sm) 0;
+}
+
+.setting-item label {
+    color: var(--color-text-secondary);
+}
+
+.setting-item select {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-bg-dark);
+    border: 1px solid var(--color-bg-lighter);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-primary);
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.setting-item select:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+.setting-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--color-accent);
+    cursor: pointer;
+}
+
+.setting-item input[type="range"] {
+    width: 150px;
+    accent-color: var(--color-accent);
+    cursor: pointer;
+}
+
+/* ===============================================
+   About Modal
+   =============================================== */
+
+.about-content {
+    text-align: left;
+}
+
+.about-section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.about-section h3 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--color-accent);
+    margin-bottom: var(--spacing-sm);
+}
+
+.about-section p {
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+}
+
+.about-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.about-section ul li {
+    padding: var(--spacing-xs) 0;
+    color: var(--color-text-secondary);
+}
+
+.about-section.quotes blockquote {
+    font-family: var(--font-accent);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--color-text-primary);
+    padding: var(--spacing-md);
+    background: var(--color-bg-dark);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+}
+
+.about-section.quotes cite {
+    display: block;
+    margin-top: var(--spacing-sm);
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    font-style: normal;
+}
+
+/* ===============================================
+   Promotion Modal
+   =============================================== */
+
+.promotion-pieces {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
+
+.promo-piece {
+    width: 70px;
+    height: 70px;
+    background: var(--color-bg-dark);
+    border: 2px solid var(--color-bg-lighter);
+    border-radius: var(--radius-md);
+    font-size: 2.5rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.promo-piece:hover {
+    border-color: var(--color-accent);
+    transform: scale(1.1);
+    box-shadow: var(--shadow-glow);
+}
+
+.promo-piece.black-piece {
+    color: #1a1a1a;
+}
+
+/* ===============================================
+   Game Over Modal
+   =============================================== */
+
+.gameover-result {
+    font-size: 1.3rem;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-lg);
+}
+
+.gameover-quote {
+    font-family: var(--font-accent);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    padding: var(--spacing-md);
+    background: var(--color-bg-dark);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--spacing-xl);
+    text-align: left;
+}
+
+.gameover-actions {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+/* ===============================================
+   Share Modal
+   =============================================== */
+
+.share-options {
+    text-align: center;
+}
+
+.share-link {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+}
+
+.share-link input {
+    flex: 1;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-bg-dark);
+    border: 1px solid var(--color-bg-lighter);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-primary);
+    font-size: 0.9rem;
+}
+
+.share-buttons {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-sm);
+}
+
+.share-btn {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.share-btn.twitter {
+    background: #1DA1F2;
+}
+
+.share-btn.facebook {
+    background: #4267B2;
+}
+
+.share-btn.email {
+    background: var(--color-bg-lighter);
+}
+
+.share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-small);
+}
+
+/* ===============================================
+   Responsive Modal Styles
+   =============================================== */
+
+@media (max-width: 768px) {
+    .modal-content {
+        padding: var(--spacing-lg);
+        margin: var(--spacing-md);
+    }
+
+    .modal-title {
+        font-size: 1.5rem;
+    }
+
+    .game-modes {
+        grid-template-columns: 1fr;
+    }
+
+    .mode-card {
+        padding: var(--spacing-md);
+    }
+
+    .difficulty-select {
+        flex-direction: column;
+    }
+
+    .diff-btn {
+        min-width: auto;
+    }
+
+    .promotion-pieces {
+        gap: var(--spacing-sm);
+    }
+
+    .promo-piece {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        padding: var(--spacing-md);
+    }
+
+    .color-select {
+        flex-direction: column;
+    }
+
+    .time-select {
+        justify-content: center;
+    }
+
+    .gameover-actions {
+        flex-direction: column;
+    }
+
+    .gameover-actions .btn {
+        width: 100%;
+    }
+}

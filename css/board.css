@@ -1,0 +1,510 @@
+/* ===============================================
+   DOSTOEVSKY CHESS - Board Styles
+   Chess board and piece styling
+   =============================================== */
+
+/* Board Container */
+.board-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Board Frame - Ornate Border */
+.board-frame {
+    position: relative;
+    padding: 20px;
+    background: linear-gradient(145deg, 
+        var(--color-bg-light) 0%, 
+        var(--color-bg-dark) 50%,
+        var(--color-bg-medium) 100%);
+    border: 3px solid var(--color-accent-dark);
+    border-radius: var(--radius-md);
+    box-shadow: 
+        var(--shadow-large),
+        inset 0 0 30px rgba(0, 0, 0, 0.3),
+        0 0 60px rgba(201, 162, 39, 0.1);
+}
+
+/* Corner Ornaments */
+.board-ornament {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: 2px solid var(--color-accent);
+    opacity: 0.6;
+}
+
+.board-ornament.top-left {
+    top: 5px;
+    left: 5px;
+    border-right: none;
+    border-bottom: none;
+}
+
+.board-ornament.top-right {
+    top: 5px;
+    right: 5px;
+    border-left: none;
+    border-bottom: none;
+}
+
+.board-ornament.bottom-left {
+    bottom: 5px;
+    left: 5px;
+    border-right: none;
+    border-top: none;
+}
+
+.board-ornament.bottom-right {
+    bottom: 5px;
+    right: 5px;
+    border-left: none;
+    border-top: none;
+}
+
+/* Board Coordinates */
+.board-coordinates {
+    position: absolute;
+    pointer-events: none;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+.coord-row {
+    display: flex;
+    justify-content: space-around;
+    width: calc(100% - 40px);
+    left: 20px;
+    position: absolute;
+}
+
+.coord-row span {
+    width: calc(100% / 8);
+    text-align: center;
+}
+
+.coord-row.top {
+    top: 3px;
+}
+
+.coord-row.bottom {
+    bottom: 3px;
+}
+
+.coord-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: calc(100% - 40px);
+    top: 20px;
+    position: absolute;
+}
+
+.coord-col span {
+    height: calc(100% / 8);
+    display: flex;
+    align-items: center;
+}
+
+.coord-col.left {
+    left: 5px;
+}
+
+.coord-col.right {
+    right: 5px;
+}
+
+.hide-coords .board-coordinates {
+    display: none;
+}
+
+/* Chess Board */
+.chess-board {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    width: min(70vmin, 560px);
+    height: min(70vmin, 560px);
+    border: 2px solid var(--color-bg-lighter);
+    box-shadow: var(--shadow-medium);
+}
+
+/* Board Squares */
+.square {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.square.light {
+    background-color: var(--color-square-light);
+}
+
+.square.dark {
+    background-color: var(--color-square-dark);
+}
+
+/* Square States */
+.square.selected {
+    background-color: var(--color-square-selected) !important;
+}
+
+.square.legal-move::after {
+    content: '';
+    position: absolute;
+    width: 30%;
+    height: 30%;
+    background: var(--color-square-legal);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.square.legal-capture::after {
+    content: '';
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    border: 4px solid var(--color-square-legal);
+    border-radius: 50%;
+    background: transparent;
+    pointer-events: none;
+}
+
+.square.last-move {
+    background-color: var(--color-square-last-move) !important;
+}
+
+.square.last-move.light {
+    background-color: rgba(201, 162, 39, 0.35) !important;
+}
+
+.square.last-move.dark {
+    background-color: rgba(139, 95, 40, 0.5) !important;
+}
+
+.square.check {
+    background: radial-gradient(circle, 
+        var(--color-square-check) 0%, 
+        transparent 70%) !important;
+}
+
+.square.hint {
+    animation: hint-pulse 1s ease-in-out infinite;
+}
+
+@keyframes hint-pulse {
+    0%, 100% {
+        box-shadow: inset 0 0 0 3px var(--color-accent);
+    }
+    50% {
+        box-shadow: inset 0 0 0 6px var(--color-accent);
+    }
+}
+
+/* Hover Effects */
+.square:hover:not(.selected) {
+    filter: brightness(1.1);
+}
+
+/* Chess Pieces */
+.piece {
+    font-size: calc(min(70vmin, 560px) / 10);
+    line-height: 1;
+    cursor: grab;
+    user-select: none;
+    transition: transform var(--transition-fast);
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    z-index: 10;
+}
+
+.piece:active {
+    cursor: grabbing;
+}
+
+.piece.white {
+    color: #fff;
+    text-shadow: 
+        0 0 2px #000,
+        1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.piece.black {
+    color: #1a1a1a;
+    text-shadow: 
+        0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+/* Piece Dragging */
+.piece.dragging {
+    position: fixed;
+    z-index: 1000;
+    pointer-events: none;
+    transform: scale(1.2);
+    filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+/* Piece Animation */
+.piece.moving {
+    transition: all 0.2s ease-out;
+}
+
+.piece.captured {
+    animation: capture 0.3s ease-out forwards;
+}
+
+@keyframes capture {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0) rotate(180deg);
+        opacity: 0;
+    }
+}
+
+/* Promotion Highlight */
+.square.promotion {
+    animation: promotion-glow 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes promotion-glow {
+    from {
+        box-shadow: inset 0 0 10px var(--color-accent);
+    }
+    to {
+        box-shadow: inset 0 0 20px var(--color-accent);
+    }
+}
+
+/* ===============================================
+   Board Themes
+   =============================================== */
+
+/* Classic Dostoevsky (Default) */
+.theme-classic .square.light {
+    background-color: #d4c4a8;
+}
+.theme-classic .square.dark {
+    background-color: #6b5344;
+}
+
+/* Manuscript Theme */
+.theme-manuscript .square.light {
+    background-color: #f5f0e1;
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d4c4a8' fill-opacity='0.3'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z'/%3E%3C/g%3E%3C/svg%3E");
+}
+.theme-manuscript .square.dark {
+    background-color: #c9b896;
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23a89878' fill-opacity='0.3'%3E%3Cpath d='M0 0h40v40H0V0zm1 1h38v38H1V1z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Midnight Petersburg */
+.theme-midnight .square.light {
+    background-color: #4a5568;
+}
+.theme-midnight .square.dark {
+    background-color: #2d3748;
+}
+.theme-midnight .board-frame {
+    border-color: #4a5568;
+}
+
+/* Sepia Pages */
+.theme-sepia .square.light {
+    background-color: #e8dcc8;
+}
+.theme-sepia .square.dark {
+    background-color: #a08060;
+}
+.theme-sepia .board-frame {
+    border-color: #8b7355;
+}
+
+/* ===============================================
+   Piece Styles
+   =============================================== */
+
+/* Classic Pieces */
+.piece-style-classic .piece.white { color: #ffffff; }
+.piece-style-classic .piece.black { color: #1a1a1a; }
+
+/* Ornate Russian */
+.piece-style-ornate .piece {
+    font-family: serif;
+}
+.piece-style-ornate .piece.white { 
+    color: #ffd700;
+    text-shadow: 
+        0 0 3px #8b6914,
+        2px 2px 2px rgba(0, 0, 0, 0.5);
+}
+.piece-style-ornate .piece.black { 
+    color: #2c1810;
+    text-shadow: 
+        0 0 2px rgba(139, 0, 0, 0.5);
+}
+
+/* Minimalist */
+.piece-style-minimalist .piece {
+    filter: none;
+}
+.piece-style-minimalist .piece.white { 
+    color: #e0e0e0;
+    text-shadow: none;
+}
+.piece-style-minimalist .piece.black { 
+    color: #404040;
+    text-shadow: none;
+}
+
+/* ===============================================
+   Board Flipped State
+   =============================================== */
+
+.chess-board.flipped {
+    transform: rotate(180deg);
+}
+
+.chess-board.flipped .piece {
+    transform: rotate(180deg);
+}
+
+.chess-board.flipped .square.legal-move::after,
+.chess-board.flipped .square.legal-capture::after {
+    transform: rotate(180deg);
+}
+
+/* Coordinates for flipped board */
+.board-frame.flipped .coord-row.top span,
+.board-frame.flipped .coord-row.bottom span {
+    transform: scaleX(-1);
+}
+
+.board-frame.flipped .coord-col.left,
+.board-frame.flipped .coord-col.right {
+    flex-direction: column-reverse;
+}
+
+/* ===============================================
+   Analysis Mode
+   =============================================== */
+
+.analysis-mode .square.best-move {
+    box-shadow: inset 0 0 0 4px #4CAF50;
+}
+
+.analysis-mode .square.good-move {
+    box-shadow: inset 0 0 0 3px #8BC34A;
+}
+
+.analysis-mode .square.inaccuracy {
+    box-shadow: inset 0 0 0 3px #FFC107;
+}
+
+.analysis-mode .square.mistake {
+    box-shadow: inset 0 0 0 3px #FF9800;
+}
+
+.analysis-mode .square.blunder {
+    box-shadow: inset 0 0 0 4px #F44336;
+}
+
+/* Evaluation Arrow */
+.eval-arrow {
+    position: absolute;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.eval-arrow line {
+    stroke: var(--color-accent);
+    stroke-width: 8;
+    stroke-linecap: round;
+    opacity: 0.7;
+}
+
+.eval-arrow polygon {
+    fill: var(--color-accent);
+    opacity: 0.7;
+}
+
+/* ===============================================
+   Mobile Adjustments
+   =============================================== */
+
+@media (max-width: 768px) {
+    .chess-board {
+        width: min(90vmin, 400px);
+        height: min(90vmin, 400px);
+    }
+
+    .piece {
+        font-size: calc(min(90vmin, 400px) / 10);
+    }
+
+    .board-frame {
+        padding: 15px;
+    }
+
+    .board-ornament {
+        width: 20px;
+        height: 20px;
+    }
+
+    .board-coordinates {
+        font-size: 0.65rem;
+    }
+
+    .coord-row {
+        width: calc(100% - 30px);
+        left: 15px;
+    }
+
+    .coord-col {
+        height: calc(100% - 30px);
+        top: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .chess-board {
+        width: min(95vmin, 320px);
+        height: min(95vmin, 320px);
+    }
+
+    .piece {
+        font-size: calc(min(95vmin, 320px) / 10);
+    }
+
+    .board-frame {
+        padding: 10px;
+    }
+
+    .board-ornament {
+        display: none;
+    }
+}
+
+/* ===============================================
+   Touch Device Optimizations
+   =============================================== */
+
+@media (hover: none) and (pointer: coarse) {
+    .square {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .piece {
+        cursor: pointer;
+    }
+
+    .square:active {
+        transform: scale(0.95);
+    }
+}

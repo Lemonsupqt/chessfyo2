@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Братья Карамазовы Chess | Dostoevsky Chess</title>
+    <meta name="description" content="A literary chess experience inspired by Fyodor Dostoevsky. Play against friends or AI in this dark, philosophical chess game.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=IM+Fell+English:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/board.css">
+    <link rel="stylesheet" href="css/modals.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+</head>
+<body>
+    <!-- Atmospheric Background -->
+    <div class="atmosphere">
+        <div class="fog fog-1"></div>
+        <div class="fog fog-2"></div>
+        <div class="candle-glow"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="title-section">
+                <h1 class="main-title">
+                    <span class="russian">Братья Карамазовы</span>
+                    <span class="english">Chess</span>
+                </h1>
+                <p class="subtitle">"The soul is healed by being with children... and chess."</p>
+            </div>
+            <nav class="nav-buttons">
+                <button id="btn-new-game" class="btn btn-primary">
+                    <span class="btn-icon">♔</span> New Game
+                </button>
+                <button id="btn-settings" class="btn btn-secondary">
+                    <span class="btn-icon">⚙</span> Settings
+                </button>
+                <button id="btn-about" class="btn btn-secondary">
+                    <span class="btn-icon">📖</span> About
+                </button>
+            </nav>
+        </header>
+
+        <!-- Main Game Area -->
+        <main class="game-area">
+            <!-- Left Panel - Player Info & Captured -->
+            <aside class="side-panel left-panel">
+                <div class="player-card opponent">
+                    <div class="player-avatar">
+                        <span class="avatar-icon">♚</span>
+                    </div>
+                    <div class="player-info">
+                        <h3 class="player-name" id="opponent-name">Raskolnikov</h3>
+                        <p class="player-role">Black</p>
+                    </div>
+                    <div class="player-timer" id="opponent-timer">10:00</div>
+                </div>
+                
+                <div class="captured-pieces" id="captured-white">
+                    <h4>Fallen Souls</h4>
+                    <div class="pieces-list"></div>
+                </div>
+
+                <div class="dostoevsky-quote">
+                    <blockquote id="game-quote">
+                        "Man is sometimes extraordinarily, passionately, in love with suffering."
+                    </blockquote>
+                    <cite>— Crime and Punishment</cite>
+                </div>
+            </aside>
+
+            <!-- Chess Board -->
+            <div class="board-container">
+                <div class="board-frame">
+                    <div class="board-ornament top-left"></div>
+                    <div class="board-ornament top-right"></div>
+                    <div class="board-ornament bottom-left"></div>
+                    <div class="board-ornament bottom-right"></div>
+                    
+                    <div class="board-coordinates">
+                        <div class="coord-row top">
+                            <span>a</span><span>b</span><span>c</span><span>d</span>
+                            <span>e</span><span>f</span><span>g</span><span>h</span>
+                        </div>
+                        <div class="coord-col left">
+                            <span>8</span><span>7</span><span>6</span><span>5</span>
+                            <span>4</span><span>3</span><span>2</span><span>1</span>
+                        </div>
+                        <div class="coord-col right">
+                            <span>8</span><span>7</span><span>6</span><span>5</span>
+                            <span>4</span><span>3</span><span>2</span><span>1</span>
+                        </div>
+                        <div class="coord-row bottom">
+                            <span>a</span><span>b</span><span>c</span><span>d</span>
+                            <span>e</span><span>f</span><span>g</span><span>h</span>
+                        </div>
+                    </div>
+                    
+                    <div id="chess-board" class="chess-board"></div>
+                </div>
+                
+                <div class="game-controls">
+                    <button id="btn-flip" class="control-btn" title="Flip Board">
+                        <span>⟲</span>
+                    </button>
+                    <button id="btn-undo" class="control-btn" title="Undo Move">
+                        <span>↶</span>
+                    </button>
+                    <button id="btn-redo" class="control-btn" title="Redo Move">
+                        <span>↷</span>
+                    </button>
+                    <button id="btn-hint" class="control-btn" title="Get Hint">
+                        <span>💡</span>
+                    </button>
+                    <button id="btn-resign" class="control-btn danger" title="Resign">
+                        <span>🏳</span>
+                    </button>
+                    <button id="btn-draw" class="control-btn" title="Offer Draw">
+                        <span>🤝</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Panel - Move History & Chat -->
+            <aside class="side-panel right-panel">
+                <div class="player-card current">
+                    <div class="player-avatar">
+                        <span class="avatar-icon">♔</span>
+                    </div>
+                    <div class="player-info">
+                        <h3 class="player-name" id="player-name">Prince Myshkin</h3>
+                        <p class="player-role">White</p>
+                    </div>
+                    <div class="player-timer" id="player-timer">10:00</div>
+                </div>
+
+                <div class="captured-pieces" id="captured-black">
+                    <h4>Fallen Souls</h4>
+                    <div class="pieces-list"></div>
+                </div>
+
+                <div class="move-history">
+                    <h4>Chronicle of Moves</h4>
+                    <div class="moves-list" id="moves-list"></div>
+                </div>
+
+                <div class="game-status">
+                    <p id="status-text">White to move</p>
+                </div>
+            </aside>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-quote">"Beauty will save the world." — The Idiot</p>
+            <div class="footer-links">
+                <a href="#" id="link-share">Share Game</a>
+                <a href="#" id="link-export">Export PGN</a>
+                <a href="https://github.com" target="_blank">GitHub</a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modals -->
+    <!-- New Game Modal -->
+    <div id="modal-new-game" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h2 class="modal-title">Begin Your Journey</h2>
+            <p class="modal-subtitle">"Every new beginning comes from some other beginning's end."</p>
+            
+            <div class="game-modes">
+                <button class="mode-card" data-mode="local">
+                    <div class="mode-icon">👥</div>
+                    <h3>Local Duel</h3>
+                    <p>Two souls, one board. Play against a friend on this device.</p>
+                </button>
+                
+                <button class="mode-card" data-mode="online">
+                    <div class="mode-icon">🌐</div>
+                    <h3>Online Match</h3>
+                    <p>Challenge a distant friend. Share a link, forge a connection.</p>
+                </button>
+                
+                <button class="mode-card" data-mode="ai">
+                    <div class="mode-icon">🤖</div>
+                    <h3>Versus Machine</h3>
+                    <p>Test your mettle against Stockfish, the digital grandmaster.</p>
+                </button>
+                
+                <button class="mode-card" data-mode="puzzles">
+                    <div class="mode-icon">🧩</div>
+                    <h3>Puzzles</h3>
+                    <p>Sharpen your mind with classic chess puzzles.</p>
+                </button>
+            </div>
+
+            <div class="game-options" id="game-options" style="display: none;">
+                <h3>Game Settings</h3>
+                
+                <div class="option-group">
+                    <label>Play as:</label>
+                    <div class="color-select">
+                        <button class="color-btn active" data-color="white">
+                            <span>♔</span> White
+                        </button>
+                        <button class="color-btn" data-color="random">
+                            <span>🎲</span> Random
+                        </button>
+                        <button class="color-btn" data-color="black">
+                            <span>♚</span> Black
+                        </button>
+                    </div>
+                </div>
+
+                <div class="option-group" id="ai-difficulty" style="display: none;">
+                    <label>AI Difficulty:</label>
+                    <div class="difficulty-select">
+                        <button class="diff-btn" data-level="1">
+                            <span>Alyosha</span>
+                            <small>Beginner</small>
+                        </button>
+                        <button class="diff-btn" data-level="5">
+                            <span>Dmitri</span>
+                            <small>Intermediate</small>
+                        </button>
+                        <button class="diff-btn active" data-level="10">
+                            <span>Ivan</span>
+                            <small>Advanced</small>
+                        </button>
+                        <button class="diff-btn" data-level="15">
+                            <span>Smerdyakov</span>
+                            <small>Expert</small>
+                        </button>
+                        <button class="diff-btn" data-level="20">
+                            <span>Grand Inquisitor</span>
+                            <small>Master</small>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="option-group">
+                    <label>Time Control:</label>
+                    <div class="time-select">
+                        <button class="time-btn" data-time="0">
+                            <span>∞</span> Unlimited
+                        </button>
+                        <button class="time-btn" data-time="180">
+                            <span>3</span> min
+                        </button>
+                        <button class="time-btn active" data-time="600">
+                            <span>10</span> min
+                        </button>
+                        <button class="time-btn" data-time="900">
+                            <span>15</span> min
+                        </button>
+                        <button class="time-btn" data-time="1800">
+                            <span>30</span> min
+                        </button>
+                    </div>
+                </div>
+
+                <button id="btn-start-game" class="btn btn-primary btn-large">
+                    <span>Begin the Game</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Online Game Modal -->
+    <div id="modal-online" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h2 class="modal-title">Online Connection</h2>
+            
+            <div class="online-options">
+                <div class="online-create">
+                    <h3>Create Game</h3>
+                    <p>Generate a unique link to share with your friend.</p>
+                    <button id="btn-create-room" class="btn btn-primary">Create Room</button>
+                    <div class="room-link" id="room-link" style="display: none;">
+                        <input type="text" id="room-url" readonly>
+                        <button id="btn-copy-link" class="btn btn-secondary">Copy</button>
+                    </div>
+                </div>
+                
+                <div class="online-divider"><span>OR</span></div>
+                
+                <div class="online-join">
+                    <h3>Join Game</h3>
+                    <p>Enter the room code shared by your friend.</p>
+                    <input type="text" id="room-code-input" placeholder="Enter room code...">
+                    <button id="btn-join-room" class="btn btn-primary">Join Room</button>
+                </div>
+            </div>
+            
+            <div class="connection-status" id="connection-status">
+                <div class="status-indicator"></div>
+                <span>Waiting for opponent...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="modal-settings" class="modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h2 class="modal-title">Settings</h2>
+            
+            <div class="settings-group">
+                <h3>Appearance</h3>
+                <div class="setting-item">
+                    <label>Board Theme:</label>
+                    <select id="board-theme">
+                        <option value="classic">Classic Dostoevsky</option>
+                        <option value="manuscript">Manuscript</option>
+                        <option value="midnight">Midnight Petersburg</option>
+                        <option value="sepia">Sepia Pages</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>Piece Style:</label>
+                    <select id="piece-style">
+                        <option value="classic">Classic</option>
+                        <option value="ornate">Ornate Russian</option>
+                        <option value="minimalist">Minimalist</option>
+                    </select>
+                </div>
+                <div class="setting-item toggle">
+                    <label>Show Coordinates:</label>
+                    <input type="checkbox" id="show-coords" checked>
+                </div>
+                <div class="setting-item toggle">
+                    <label>Highlight Legal Moves:</label>
+                    <input type="checkbox" id="highlight-moves" checked>
+                </div>
+                <div class="setting-item toggle">
+                    <label>Atmospheric Effects:</label>
+                    <input type="checkbox" id="atmosphere-effects" checked>
+                </div>
+            </div>
+            
+            <div class="settings-group">
+                <h3>Sound</h3>
+                <div class="setting-item toggle">
+                    <label>Sound Effects:</label>
+                    <input type="checkbox" id="sound-effects" checked>
+                </div>
+                <div class="setting-item">
+                    <label>Volume:</label>
+                    <input type="range" id="volume" min="0" max="100" value="70">
+                </div>
+            </div>
+            
+            <div class="settings-group">
+                <h3>Gameplay</h3>
+                <div class="setting-item toggle">
+                    <label>Auto-Queen Promotion:</label>
+                    <input type="checkbox" id="auto-queen">
+                </div>
+                <div class="setting-item toggle">
+                    <label>Move Confirmation:</label>
+                    <input type="checkbox" id="move-confirm">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div id="modal-about" class="modal">
+        <div class="modal-content modal-about">
+            <button class="modal-close">&times;</button>
+            <h2 class="modal-title">About This Game</h2>
+            
+            <div class="about-content">
+                <div class="about-section">
+                    <h3>Братья Карамазовы Chess</h3>
+                    <p>A chess experience inspired by the works of Fyodor Mikhailovich Dostoevsky, 
+                    the great Russian novelist whose exploration of the human psyche continues to 
+                    captivate readers worldwide.</p>
+                </div>
+                
+                <div class="about-section">
+                    <h3>Features</h3>
+                    <ul>
+                        <li>🎮 Multiple game modes: Local, Online, vs AI</li>
+                        <li>🤖 Stockfish integration with adjustable difficulty</li>
+                        <li>🌐 Peer-to-peer online play - no server required</li>
+                        <li>🧩 Classic chess puzzles</li>
+                        <li>⏱️ Customizable time controls</li>
+                        <li>📖 Move history and PGN export</li>
+                        <li>🎨 Multiple board themes</li>
+                    </ul>
+                </div>
+                
+                <div class="about-section quotes">
+                    <h3>Words of Wisdom</h3>
+                    <div class="quote-carousel" id="quote-carousel">
+                        <blockquote>
+                            "The darker the night, the brighter the stars, 
+                            The deeper the grief, the closer is God!"
+                            <cite>— Crime and Punishment</cite>
+                        </blockquote>
+                    </div>
+                </div>
+                
+                <div class="about-section">
+                    <h3>Credits</h3>
+                    <p>Chess engine: Stockfish (via stockfish.js)</p>
+                    <p>Peer connection: PeerJS</p>
+                    <p>Inspired by the literary genius of Fyodor Dostoevsky</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Promotion Modal -->
+    <div id="modal-promotion" class="modal">
+        <div class="modal-content modal-small">
+            <h2 class="modal-title">Pawn Promotion</h2>
+            <p>Choose your piece:</p>
+            <div class="promotion-pieces" id="promotion-pieces">
+                <button class="promo-piece" data-piece="q">♕</button>
+                <button class="promo-piece" data-piece="r">♖</button>
+                <button class="promo-piece" data-piece="b">♗</button>
+                <button class="promo-piece" data-piece="n">♘</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="modal-gameover" class="modal">
+        <div class="modal-content modal-gameover">
+            <h2 class="modal-title" id="gameover-title">Game Over</h2>
+            <p class="gameover-result" id="gameover-result"></p>
+            <blockquote class="gameover-quote" id="gameover-quote"></blockquote>
+            <div class="gameover-actions">
+                <button id="btn-rematch" class="btn btn-primary">Rematch</button>
+                <button id="btn-new-game-end" class="btn btn-secondary">New Game</button>
+                <button id="btn-analyze" class="btn btn-secondary">Analyze</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="modal-share" class="modal">
+        <div class="modal-content modal-small">
+            <button class="modal-close">&times;</button>
+            <h2 class="modal-title">Share Game</h2>
+            <div class="share-options">
+                <div class="share-link">
+                    <input type="text" id="share-url" readonly>
+                    <button id="btn-copy-share" class="btn btn-secondary">Copy</button>
+                </div>
+                <div class="share-buttons">
+                    <button class="share-btn twitter" id="share-twitter">Twitter</button>
+                    <button class="share-btn facebook" id="share-facebook">Facebook</button>
+                    <button class="share-btn email" id="share-email">Email</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script src="js/stockfish-loader.js"></script>
+    <script src="js/chess.js"></script>
+    <script src="js/board.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/multiplayer.js"></script>
+    <script src="js/puzzles.js"></script>
+    <script src="js/sounds.js"></script>
+    <script src="js/quotes.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
