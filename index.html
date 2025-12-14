@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Братья Шахматисты | The Brothers Chess - A Dostoevsky Chess Experience</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♚</text></svg>">
+</head>
+<body>
+    <!-- Atmospheric Background -->
+    <div class="atmosphere">
+        <div class="fog fog-1"></div>
+        <div class="fog fog-2"></div>
+        <div class="candle-flicker"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-ornament left">❧</div>
+            <div class="title-section">
+                <h1 class="main-title">Братья Шахматисты</h1>
+                <p class="subtitle">The Brothers Chess</p>
+                <p class="tagline">"The soul is healed by being with children... and by playing chess."</p>
+            </div>
+            <div class="header-ornament right">❧</div>
+        </header>
+
+        <!-- Quote Banner -->
+        <div class="quote-banner" id="quoteBanner">
+            <span class="quote-mark">"</span>
+            <span class="quote-text" id="quoteText">Man is a mystery. It needs to be unravelled...</span>
+            <span class="quote-author">— Fyodor Dostoevsky</span>
+        </div>
+
+        <!-- Main Menu Screen -->
+        <div class="screen active" id="menuScreen">
+            <div class="menu-container">
+                <div class="menu-header">
+                    <div class="chess-icon">♚</div>
+                    <h2>Choose Your Path</h2>
+                    <p class="menu-subtitle">Every move reveals the soul</p>
+                </div>
+
+                <div class="menu-options">
+                    <button class="menu-btn" onclick="showScreen('modeSelect')">
+                        <span class="btn-icon">⚔</span>
+                        <span class="btn-text">
+                            <span class="btn-title">New Game</span>
+                            <span class="btn-desc">Begin your philosophical journey</span>
+                        </span>
+                    </button>
+
+                    <button class="menu-btn" onclick="showScreen('multiplayerLobby')">
+                        <span class="btn-icon">🤝</span>
+                        <span class="btn-text">
+                            <span class="btn-title">Play with Friends</span>
+                            <span class="btn-desc">Challenge a kindred spirit</span>
+                        </span>
+                    </button>
+
+                    <button class="menu-btn" onclick="joinFromUrl()">
+                        <span class="btn-icon">📜</span>
+                        <span class="btn-text">
+                            <span class="btn-title">Join Game</span>
+                            <span class="btn-desc">Enter with an invitation</span>
+                        </span>
+                    </button>
+
+                    <button class="menu-btn" onclick="showScreen('rulesScreen')">
+                        <span class="btn-icon">📖</span>
+                        <span class="btn-text">
+                            <span class="btn-title">The Doctrine</span>
+                            <span class="btn-desc">Rules & wisdom of the game</span>
+                        </span>
+                    </button>
+                </div>
+
+                <div class="menu-footer">
+                    <div class="russian-ornament">☙ ❧</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mode Selection Screen -->
+        <div class="screen" id="modeSelect">
+            <div class="panel">
+                <button class="back-btn" onclick="showScreen('menuScreen')">← Return</button>
+                <h2 class="panel-title">Select Your Trial</h2>
+                
+                <div class="mode-grid">
+                    <div class="mode-card" onclick="startGame('ai', 'easy')">
+                        <div class="mode-icon">🕯️</div>
+                        <h3>The Innocent</h3>
+                        <p>Alyosha's Path - Gentle AI</p>
+                        <span class="difficulty">Beginner</span>
+                    </div>
+
+                    <div class="mode-card" onclick="startGame('ai', 'medium')">
+                        <div class="mode-icon">⚖️</div>
+                        <h3>The Intellectual</h3>
+                        <p>Ivan's Challenge - Moderate AI</p>
+                        <span class="difficulty">Intermediate</span>
+                    </div>
+
+                    <div class="mode-card" onclick="startGame('ai', 'hard')">
+                        <div class="mode-icon">🔥</div>
+                        <h3>The Tormented</h3>
+                        <p>Dmitri's Fury - Strong AI</p>
+                        <span class="difficulty">Advanced</span>
+                    </div>
+
+                    <div class="mode-card" onclick="startGame('ai', 'master')">
+                        <div class="mode-icon">💀</div>
+                        <h3>The Grand Inquisitor</h3>
+                        <p>Ultimate Challenge - Master AI</p>
+                        <span class="difficulty">Master</span>
+                    </div>
+
+                    <div class="mode-card" onclick="startGame('local')">
+                        <div class="mode-icon">👥</div>
+                        <h3>Brothers at the Board</h3>
+                        <p>Two players, one device</p>
+                        <span class="difficulty">Local Play</span>
+                    </div>
+
+                    <div class="mode-card" onclick="startGame('analysis')">
+                        <div class="mode-icon">🔍</div>
+                        <h3>The Confession</h3>
+                        <p>Analysis mode - Study positions</p>
+                        <span class="difficulty">Practice</span>
+                    </div>
+                </div>
+
+                <!-- Time Control Selection -->
+                <div class="time-control-section">
+                    <h3>Time Control</h3>
+                    <div class="time-options">
+                        <button class="time-btn active" data-time="0">♾ Unlimited</button>
+                        <button class="time-btn" data-time="60">⚡ 1 min</button>
+                        <button class="time-btn" data-time="180">🔥 3 min</button>
+                        <button class="time-btn" data-time="300">⏱ 5 min</button>
+                        <button class="time-btn" data-time="600">🕐 10 min</button>
+                        <button class="time-btn" data-time="900">📖 15 min</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Multiplayer Lobby Screen -->
+        <div class="screen" id="multiplayerLobby">
+            <div class="panel">
+                <button class="back-btn" onclick="showScreen('menuScreen')">← Return</button>
+                <h2 class="panel-title">The Meeting Place</h2>
+                <p class="panel-subtitle">"To love someone means to see them as God intended them."</p>
+
+                <div class="multiplayer-options">
+                    <div class="mp-section">
+                        <h3>🏠 Create a Game</h3>
+                        <p>Generate a link to share with your friend</p>
+                        <div class="color-choice">
+                            <label>Play as:</label>
+                            <button class="color-btn active" data-color="white">♔ White</button>
+                            <button class="color-btn" data-color="black">♚ Black</button>
+                            <button class="color-btn" data-color="random">🎲 Random</button>
+                        </div>
+                        <div class="time-options mp-time">
+                            <button class="time-btn active" data-time="0">♾ Unlimited</button>
+                            <button class="time-btn" data-time="300">⏱ 5 min</button>
+                            <button class="time-btn" data-time="600">🕐 10 min</button>
+                        </div>
+                        <button class="action-btn create-btn" onclick="createMultiplayerGame()">
+                            Create Game Room
+                        </button>
+                    </div>
+
+                    <div class="mp-divider">
+                        <span>or</span>
+                    </div>
+
+                    <div class="mp-section">
+                        <h3>🔗 Join a Game</h3>
+                        <p>Enter the game code from your friend</p>
+                        <input type="text" id="gameCodeInput" class="game-code-input" placeholder="Enter game code...">
+                        <button class="action-btn join-btn" onclick="joinMultiplayerGame()">
+                            Join Game
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Generated Link Display -->
+                <div class="link-display hidden" id="linkDisplay">
+                    <h3>📜 Your Invitation</h3>
+                    <p>Share this link with your friend:</p>
+                    <div class="link-container">
+                        <input type="text" id="gameLink" readonly>
+                        <button class="copy-btn" onclick="copyGameLink()">📋 Copy</button>
+                    </div>
+                    <div class="game-code-display">
+                        <span>Game Code: </span>
+                        <strong id="gameCodeDisplay"></strong>
+                    </div>
+                    <p class="waiting-text" id="waitingText">⏳ Waiting for opponent to join...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div class="screen" id="gameScreen">
+            <div class="game-container">
+                <!-- Left Panel - Captured Pieces & Info -->
+                <div class="side-panel left-panel">
+                    <div class="player-info opponent">
+                        <div class="player-avatar">♚</div>
+                        <div class="player-details">
+                            <span class="player-name" id="opponentName">Opponent</span>
+                            <span class="player-rating">The Adversary</span>
+                        </div>
+                        <div class="player-timer" id="opponentTimer">--:--</div>
+                    </div>
+                    
+                    <div class="captured-pieces" id="opponentCaptured"></div>
+
+                    <div class="game-status-panel">
+                        <div class="status-text" id="gameStatus">White to move</div>
+                        <div class="dostoevsky-wisdom" id="gameWisdom"></div>
+                    </div>
+
+                    <div class="captured-pieces" id="playerCaptured"></div>
+
+                    <div class="player-info player">
+                        <div class="player-avatar">♔</div>
+                        <div class="player-details">
+                            <span class="player-name" id="playerName">You</span>
+                            <span class="player-rating">The Seeker</span>
+                        </div>
+                        <div class="player-timer" id="playerTimer">--:--</div>
+                    </div>
+                </div>
+
+                <!-- Chess Board -->
+                <div class="board-container">
+                    <div class="board-frame">
+                        <div class="frame-corner top-left">❧</div>
+                        <div class="frame-corner top-right">☙</div>
+                        <div class="chess-board" id="chessBoard"></div>
+                        <div class="frame-corner bottom-left">☙</div>
+                        <div class="frame-corner bottom-right">❧</div>
+                    </div>
+                    
+                    <!-- Promotion Modal -->
+                    <div class="promotion-modal hidden" id="promotionModal">
+                        <h3>Choose thy transformation</h3>
+                        <div class="promotion-pieces">
+                            <button class="promo-piece" data-piece="q">♛</button>
+                            <button class="promo-piece" data-piece="r">♜</button>
+                            <button class="promo-piece" data-piece="b">♝</button>
+                            <button class="promo-piece" data-piece="n">♞</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel - Move History & Controls -->
+                <div class="side-panel right-panel">
+                    <div class="move-history-header">
+                        <h3>📜 Chronicle of Moves</h3>
+                    </div>
+                    <div class="move-history" id="moveHistory"></div>
+
+                    <div class="game-controls">
+                        <button class="control-btn" onclick="flipBoard()" title="Flip Board">🔄</button>
+                        <button class="control-btn" onclick="offerDraw()" title="Offer Draw">🤝</button>
+                        <button class="control-btn" onclick="resignGame()" title="Resign">🏳️</button>
+                        <button class="control-btn" onclick="undoMove()" title="Undo Move">↩️</button>
+                        <button class="control-btn" onclick="toggleSound()" title="Toggle Sound" id="soundBtn">🔊</button>
+                    </div>
+
+                    <div class="analysis-panel" id="analysisPanel">
+                        <h4>🔮 Stockfish Whispers</h4>
+                        <div class="evaluation-bar">
+                            <div class="eval-fill" id="evalFill"></div>
+                        </div>
+                        <div class="eval-text" id="evalText">Analyzing...</div>
+                        <div class="best-move" id="bestMove"></div>
+                    </div>
+
+                    <button class="quit-btn" onclick="quitGame()">← Leave Game</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rules Screen -->
+        <div class="screen" id="rulesScreen">
+            <div class="panel rules-panel">
+                <button class="back-btn" onclick="showScreen('menuScreen')">← Return</button>
+                <h2 class="panel-title">The Doctrine of Chess</h2>
+                
+                <div class="rules-content">
+                    <div class="rule-section">
+                        <h3>🏰 The Pieces & Their Souls</h3>
+                        <div class="pieces-guide">
+                            <div class="piece-info">
+                                <span class="piece-symbol">♔♚</span>
+                                <span class="piece-name">The King</span>
+                                <span class="piece-desc">Like Raskolnikov, central yet vulnerable. Moves one square in any direction.</span>
+                            </div>
+                            <div class="piece-info">
+                                <span class="piece-symbol">♕♛</span>
+                                <span class="piece-name">The Queen</span>
+                                <span class="piece-desc">Like Nastasya Filippovna, powerful and commanding. Moves any distance in any direction.</span>
+                            </div>
+                            <div class="piece-info">
+                                <span class="piece-symbol">♖♜</span>
+                                <span class="piece-name">The Rook</span>
+                                <span class="piece-desc">Like the stone walls of St. Petersburg. Moves in straight lines.</span>
+                            </div>
+                            <div class="piece-info">
+                                <span class="piece-symbol">♗♝</span>
+                                <span class="piece-name">The Bishop</span>
+                                <span class="piece-desc">Like Father Zosima, moving diagonally through faith.</span>
+                            </div>
+                            <div class="piece-info">
+                                <span class="piece-symbol">♘♞</span>
+                                <span class="piece-name">The Knight</span>
+                                <span class="piece-desc">Like the unpredictable Dmitri Karamazov. Leaps in an L-shape.</span>
+                            </div>
+                            <div class="piece-info">
+                                <span class="piece-symbol">♙♟</span>
+                                <span class="piece-name">The Pawn</span>
+                                <span class="piece-desc">Like the common people of Russia. Moves forward, captures diagonally.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rule-section">
+                        <h3>⚔️ Special Moves</h3>
+                        <ul class="rules-list">
+                            <li><strong>Castling:</strong> The King's refuge - move King two squares toward a Rook</li>
+                            <li><strong>En Passant:</strong> The ghostly capture - take a pawn that moved two squares</li>
+                            <li><strong>Promotion:</strong> The pawn's redemption - transform upon reaching the end</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-section">
+                        <h3>🎯 Victory Conditions</h3>
+                        <ul class="rules-list">
+                            <li><strong>Checkmate:</strong> The King is trapped with no escape</li>
+                            <li><strong>Resignation:</strong> Accept defeat with honor</li>
+                            <li><strong>Timeout:</strong> Time claims its victory</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-section">
+                        <h3>🤝 Draw Conditions</h3>
+                        <ul class="rules-list">
+                            <li><strong>Stalemate:</strong> No legal moves, but not in check</li>
+                            <li><strong>Agreement:</strong> Both players accept peace</li>
+                            <li><strong>Insufficient Material:</strong> Neither can checkmate</li>
+                            <li><strong>Threefold Repetition:</strong> Same position thrice</li>
+                            <li><strong>Fifty-Move Rule:</strong> No captures or pawn moves</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Modal -->
+        <div class="modal hidden" id="gameOverModal">
+            <div class="modal-content">
+                <div class="modal-ornament">❧</div>
+                <h2 id="gameOverTitle">Game Over</h2>
+                <p id="gameOverMessage" class="game-over-message"></p>
+                <div class="game-over-quote" id="gameOverQuote"></div>
+                <div class="modal-buttons">
+                    <button class="modal-btn primary" onclick="playAgain()">Play Again</button>
+                    <button class="modal-btn" onclick="showScreen('menuScreen'); closeModal();">Return to Menu</button>
+                </div>
+                <div class="modal-ornament">☙</div>
+            </div>
+        </div>
+
+        <!-- Draw Offer Modal -->
+        <div class="modal hidden" id="drawOfferModal">
+            <div class="modal-content">
+                <h2>🤝 Draw Offered</h2>
+                <p>Your opponent offers a draw. Do you accept?</p>
+                <div class="modal-buttons">
+                    <button class="modal-btn primary" onclick="acceptDraw()">Accept</button>
+                    <button class="modal-btn" onclick="declineDraw()">Decline</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>"Beauty will save the world." — Fyodor Dostoevsky</p>
+            <p class="footer-sub">Братья Шахматисты • The Brothers Chess • 2024</p>
+        </footer>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="moveSound" preload="auto"></audio>
+    <audio id="captureSound" preload="auto"></audio>
+    <audio id="checkSound" preload="auto"></audio>
+    <audio id="gameOverSound" preload="auto"></audio>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.12.0/chess.min.js"></script>
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script src="js/stockfish-wrapper.js"></script>
+    <script src="js/chess-game.js"></script>
+    <script src="js/multiplayer.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
