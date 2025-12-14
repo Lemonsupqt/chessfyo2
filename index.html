@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A beautiful, literary-themed multiplayer chess web application inspired by Fyodor Dostoevsky">
+    <meta name="keywords" content="chess, multiplayer, dostoevsky, stockfish, online chess">
+    <title>The Brothers' Gambit - A Dostoevsky Chess Experience</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♟</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">The Brothers' Gambit</h1>
+            <p class="subtitle">"The mystery of human existence lies not in just staying alive, but in finding something to live for."</p>
+            <p class="author">— Fyodor Dostoevsky</p>
+        </header>
+
+        <!-- Main Menu -->
+        <div id="mainMenu" class="menu-screen">
+            <div class="menu-content">
+                <h2>Choose Your Game</h2>
+                <div class="menu-buttons">
+                    <button class="menu-btn" onclick="showGameMode('local')">
+                        <span class="btn-icon">👥</span>
+                        <span class="btn-text">Local Match</span>
+                        <span class="btn-desc">Play face-to-face</span>
+                    </button>
+                    <button class="menu-btn" onclick="showGameMode('online')">
+                        <span class="btn-icon">🌐</span>
+                        <span class="btn-text">Online Match</span>
+                        <span class="btn-desc">Challenge a friend</span>
+                    </button>
+                    <button class="menu-btn" onclick="showGameMode('ai')">
+                        <span class="btn-icon">🤖</span>
+                        <span class="btn-text">Against Stockfish</span>
+                        <span class="btn-desc">Test your skills</span>
+                    </button>
+                    <button class="menu-btn" onclick="showGameMode('analysis')">
+                        <span class="btn-icon">📖</span>
+                        <span class="btn-text">Analysis Board</span>
+                        <span class="btn-desc">Study positions</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Online Connection Screen -->
+        <div id="onlineScreen" class="menu-screen hidden">
+            <div class="menu-content">
+                <h2>Online Match</h2>
+                <div class="connection-panel">
+                    <div class="connection-section">
+                        <h3>Create Room</h3>
+                        <button class="action-btn" onclick="createRoom()">Create New Room</button>
+                        <div id="roomIdDisplay" class="room-id-display hidden">
+                            <p>Share this room ID:</p>
+                            <div class="room-id-box">
+                                <code id="roomIdText"></code>
+                                <button class="copy-btn" onclick="copyRoomId()">Copy</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="connection-divider">OR</div>
+                    <div class="connection-section">
+                        <h3>Join Room</h3>
+                        <input type="text" id="joinRoomId" placeholder="Enter room ID" class="room-input">
+                        <button class="action-btn" onclick="joinRoom()">Join Room</button>
+                    </div>
+                </div>
+                <button class="back-btn" onclick="showMainMenu()">← Back</button>
+            </div>
+        </div>
+
+        <!-- Game Container -->
+        <div id="gameContainer" class="game-container hidden">
+            <div class="game-header">
+                <button class="back-btn" onclick="showMainMenu()">← Menu</button>
+                <div class="game-info">
+                    <div class="player-info">
+                        <span class="player-label">White:</span>
+                        <span id="whitePlayer" class="player-name">Player 1</span>
+                    </div>
+                    <div class="game-status" id="gameStatus">Your turn</div>
+                    <div class="player-info">
+                        <span class="player-label">Black:</span>
+                        <span id="blackPlayer" class="player-name">Player 2</span>
+                        <span id="aiLoading" class="ai-loading hidden">🤖 Thinking...</span>
+                    </div>
+                </div>
+                <button class="action-btn small" onclick="shareGame()">Share</button>
+            </div>
+
+            <div class="game-board-wrapper">
+                <div class="board-container">
+                    <div id="chessboard" class="chessboard"></div>
+                    <div class="board-coordinates">
+                        <div class="coords-file">a b c d e f g h</div>
+                        <div class="coords-rank">8<br>7<br>6<br>5<br>4<br>3<br>2<br>1</div>
+                    </div>
+                </div>
+
+                <div class="game-sidebar">
+                    <div class="sidebar-section">
+                        <h3>Move History</h3>
+                        <div id="moveHistory" class="move-history"></div>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3>Game Controls</h3>
+                        <div class="control-buttons">
+                            <button class="control-btn" onclick="undoMove()">↶ Undo</button>
+                            <button class="control-btn" onclick="resetGame()">🔄 Reset</button>
+                            <button class="control-btn" onclick="flipBoard()">↻ Flip</button>
+                            <button class="control-btn" onclick="exportPGN()">📄 Export PGN</button>
+                        </div>
+                    </div>
+                    <div class="sidebar-section">
+                        <h3>Position Info</h3>
+                        <div id="positionInfo" class="position-info">
+                            <div class="info-item">
+                                <span>FEN:</span>
+                                <code id="fenDisplay" class="fen-code"></code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Share Modal -->
+        <div id="shareModal" class="modal hidden">
+            <div class="modal-content">
+                <h2>Share Game</h2>
+                <p>Share this game with your friends:</p>
+                <div class="share-options">
+                    <input type="text" id="shareUrl" readonly class="share-input">
+                    <button class="action-btn" onclick="copyShareUrl()">Copy Link</button>
+                </div>
+                <button class="back-btn" onclick="closeShareModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.13.4/chess.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboardjs/1.0.0/chessboard-1.0.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboardjs/1.0.0/chessboard-1.0.0.min.css">
+    <script src="chess.js"></script>
+    <script src="multiplayer.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
