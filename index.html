@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A Dostoevsky-themed multiplayer chess web application. Play chess with friends online or challenge AI opponents.">
+    <title>The Brothers' Gambit - Dostoevsky Chess</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">The Brothers' Gambit</h1>
+            <p class="subtitle">"In every man's memories there are things he will not reveal to everyone"</p>
+            <p class="author">— Fyodor Dostoevsky</p>
+        </header>
+
+        <div class="game-modes">
+            <button class="mode-btn" id="localMode">Local Game</button>
+            <button class="mode-btn" id="onlineMode">Online Match</button>
+            <button class="mode-btn" id="aiMode">Play Against AI</button>
+            <button class="mode-btn" id="practiceMode">Practice Mode</button>
+        </div>
+
+        <div id="gameContainer" class="game-container hidden">
+            <div class="game-info">
+                <div class="player-info">
+                    <div class="player white-player">
+                        <span class="player-name" id="whitePlayer">White</span>
+                        <span class="player-status" id="whiteStatus"></span>
+                    </div>
+                    <div class="game-status" id="gameStatus">Your move</div>
+                    <div class="player black-player">
+                        <span class="player-name" id="blackPlayer">Black</span>
+                        <span class="player-status" id="blackStatus"></span>
+                    </div>
+                </div>
+                <div class="game-controls">
+                    <button class="control-btn" id="newGameBtn">New Game</button>
+                    <button class="control-btn" id="resignBtn">Resign</button>
+                    <button class="control-btn" id="offerDrawBtn">Offer Draw</button>
+                    <button class="control-btn" id="shareBtn">Share Game</button>
+                </div>
+            </div>
+
+            <div class="board-container">
+                <div id="chessboard" class="chessboard"></div>
+                <div class="move-history">
+                    <h3>Move History</h3>
+                    <div id="moveList" class="move-list"></div>
+                </div>
+            </div>
+
+            <div class="settings-panel">
+                <div class="ai-settings hidden" id="aiSettings">
+                    <h3>AI Difficulty</h3>
+                    <select id="aiDifficulty">
+                        <option value="1">Novice (Level 1)</option>
+                        <option value="5" selected>Intermediate (Level 5)</option>
+                        <option value="10">Expert (Level 10)</option>
+                        <option value="15">Master (Level 15)</option>
+                        <option value="20">Grandmaster (Level 20)</option>
+                    </select>
+                </div>
+                <div class="online-settings hidden" id="onlineSettings">
+                    <h3>Online Match</h3>
+                    <div class="connection-info">
+                        <p>Share this link with your friend:</p>
+                        <input type="text" id="shareLink" readonly>
+                        <button class="control-btn" id="copyLinkBtn">Copy Link</button>
+                    </div>
+                    <div class="connection-status" id="connectionStatus">Waiting for connection...</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal" class="modal hidden">
+            <div class="modal-content">
+                <h2 id="modalTitle">Game Over</h2>
+                <p id="modalMessage"></p>
+                <button class="control-btn" id="modalClose">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chess.js@1.0.0-beta.6/chess.min.js"></script>
+    <script src="chess.js"></script>
+    <script src="multiplayer.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Initialize Stockfish worker
+        if (typeof Worker !== 'undefined') {
+            window.stockfishWorkerUrl = 'https://cdn.jsdelivr.net/npm/stockfish.js@16.0.0/stockfish.js';
+        }
+    </script>
+</body>
+</html>
