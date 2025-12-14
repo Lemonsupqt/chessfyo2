@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dostoevsky Chess - A Game of Souls</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">Dostoevsky Chess</h1>
+            <p class="subtitle" id="quote">"The soul is healed by being with children"</p>
+        </header>
+
+        <!-- Main Menu -->
+        <div id="mainMenu" class="menu-screen">
+            <div class="menu-content">
+                <h2>Choose Your Path</h2>
+                <div class="menu-buttons">
+                    <button class="menu-btn" id="vsAIBtn">
+                        <span class="btn-icon">♟️</span>
+                        <span class="btn-text">Play vs Stockfish</span>
+                        <span class="btn-desc">Challenge the machine</span>
+                    </button>
+                    <button class="menu-btn" id="localBtn">
+                        <span class="btn-icon">👥</span>
+                        <span class="btn-text">Local Multiplayer</span>
+                        <span class="btn-desc">Pass and play</span>
+                    </button>
+                    <button class="menu-btn" id="onlineBtn">
+                        <span class="btn-icon">🌐</span>
+                        <span class="btn-text">Online Multiplayer</span>
+                        <span class="btn-desc">Share with friends</span>
+                    </button>
+                    <button class="menu-btn" id="joinBtn">
+                        <span class="btn-icon">🔑</span>
+                        <span class="btn-text">Join Game</span>
+                        <span class="btn-desc">Enter room code</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Online Menu -->
+        <div id="onlineMenu" class="menu-screen hidden">
+            <div class="menu-content">
+                <h2>Create or Join Game</h2>
+                <div class="room-section">
+                    <button class="menu-btn" id="createRoomBtn">
+                        <span class="btn-icon">✨</span>
+                        <span class="btn-text">Create New Room</span>
+                    </button>
+                    <div class="room-input-section">
+                        <input type="text" id="roomCodeInput" placeholder="Enter room code..." maxlength="6">
+                        <button class="menu-btn small" id="joinRoomBtn">Join</button>
+                    </div>
+                </div>
+                <button class="menu-btn secondary" id="backToMainBtn">← Back</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="game-screen hidden">
+            <div class="game-header">
+                <div class="game-info">
+                    <span id="gameMode" class="game-mode"></span>
+                    <span id="roomCodeDisplay" class="room-code hidden"></span>
+                </div>
+                <button id="menuBtn" class="menu-toggle">☰</button>
+            </div>
+
+            <div class="game-container">
+                <!-- Player Info (Top) -->
+                <div class="player-info top-player">
+                    <div class="player-details">
+                        <span class="player-name" id="topPlayerName">Opponent</span>
+                        <span class="player-time" id="topPlayerTime">--:--</span>
+                    </div>
+                    <div class="captured-pieces" id="topCaptured"></div>
+                </div>
+
+                <!-- Chess Board -->
+                <div id="board" class="chess-board"></div>
+
+                <!-- Player Info (Bottom) -->
+                <div class="player-info bottom-player">
+                    <div class="player-details">
+                        <span class="player-name" id="bottomPlayerName">You</span>
+                        <span class="player-time" id="bottomPlayerTime">--:--</span>
+                    </div>
+                    <div class="captured-pieces" id="bottomCaptured"></div>
+                </div>
+            </div>
+
+            <!-- Game Controls -->
+            <div class="game-controls">
+                <div class="move-history-container">
+                    <h3>Move History</h3>
+                    <div id="moveHistory" class="move-history"></div>
+                </div>
+                <div class="control-buttons">
+                    <button id="undoBtn" class="control-btn">↶ Undo</button>
+                    <button id="resignBtn" class="control-btn danger">🏳️ Resign</button>
+                    <button id="newGameBtn" class="control-btn">🔄 New Game</button>
+                    <button id="shareBtn" class="control-btn">📤 Share Game</button>
+                </div>
+            </div>
+
+            <!-- Game Status Overlay -->
+            <div id="gameStatus" class="game-status hidden">
+                <div class="status-content">
+                    <h2 id="statusTitle"></h2>
+                    <p id="statusMessage"></p>
+                    <button id="statusBtn" class="menu-btn">Continue</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings/Game Menu Overlay -->
+        <div id="gameMenuOverlay" class="overlay hidden">
+            <div class="overlay-content">
+                <h2>Game Menu</h2>
+                <button class="menu-btn" id="resumeBtn">Resume Game</button>
+                <button class="menu-btn" id="newGameFromMenuBtn">New Game</button>
+                <button class="menu-btn secondary" id="mainMenuFromGameBtn">Main Menu</button>
+            </div>
+        </div>
+
+        <!-- AI Difficulty Selection -->
+        <div id="aiDifficultyMenu" class="menu-screen hidden">
+            <div class="menu-content">
+                <h2>Choose Stockfish Difficulty</h2>
+                <div class="menu-buttons">
+                    <button class="menu-btn" data-difficulty="1">Novice (Depth 1)</button>
+                    <button class="menu-btn" data-difficulty="3">Amateur (Depth 3)</button>
+                    <button class="menu-btn" data-difficulty="5">Intermediate (Depth 5)</button>
+                    <button class="menu-btn" data-difficulty="8">Expert (Depth 8)</button>
+                    <button class="menu-btn" data-difficulty="12">Master (Depth 12)</button>
+                    <button class="menu-btn secondary" id="backFromDifficultyBtn">← Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chess.js@1.0.0-beta.6/chess.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stockfish@16/src/stockfish-nnue-16.js"></script>
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
