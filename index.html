@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Brothers Gambit — A Dostoevsky Chess Experience</title>
+    <meta name="description" content="A literary chess experience inspired by Fyodor Dostoevsky. Play against friends or the AI in this atmospheric multiplayer chess game.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♚</text></svg>">
+</head>
+<body>
+    <!-- Atmospheric Background -->
+    <div class="atmosphere">
+        <div class="fog fog-1"></div>
+        <div class="fog fog-2"></div>
+        <div class="vignette"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div id="app">
+        <!-- Landing/Menu Screen -->
+        <section id="menu-screen" class="screen active">
+            <div class="menu-container">
+                <header class="title-header">
+                    <div class="epigraph">
+                        <span class="quote-mark">"</span>
+                        <p class="epigraph-text">The soul is healed by being with children... and by chess.</p>
+                        <cite>— Fyodor Dostoevsky</cite>
+                    </div>
+                    <h1 class="main-title">
+                        <span class="title-prefix">The</span>
+                        <span class="title-main">Brothers Gambit</span>
+                    </h1>
+                    <p class="subtitle">A Chess Experience in the Spirit of Dostoevsky</p>
+                </header>
+
+                <nav class="main-menu">
+                    <button class="menu-btn" data-mode="local">
+                        <span class="btn-icon">♟</span>
+                        <span class="btn-text">
+                            <span class="btn-title">The Underground</span>
+                            <span class="btn-desc">Local two-player game</span>
+                        </span>
+                    </button>
+                    
+                    <button class="menu-btn" data-mode="online-create">
+                        <span class="btn-icon">✉</span>
+                        <span class="btn-text">
+                            <span class="btn-title">Crime & Punishment</span>
+                            <span class="btn-desc">Create online game & invite friend</span>
+                        </span>
+                    </button>
+                    
+                    <button class="menu-btn" data-mode="online-join">
+                        <span class="btn-icon">🔗</span>
+                        <span class="btn-text">
+                            <span class="btn-title">The Possessed</span>
+                            <span class="btn-desc">Join a friend's game</span>
+                        </span>
+                    </button>
+                    
+                    <button class="menu-btn" data-mode="ai">
+                        <span class="btn-icon">🎭</span>
+                        <span class="btn-text">
+                            <span class="btn-title">The Idiot</span>
+                            <span class="btn-desc">Play against Stockfish AI</span>
+                        </span>
+                    </button>
+                    
+                    <button class="menu-btn" data-mode="analysis">
+                        <span class="btn-icon">📖</span>
+                        <span class="btn-text">
+                            <span class="btn-title">Notes from Underground</span>
+                            <span class="btn-desc">Analysis & practice board</span>
+                        </span>
+                    </button>
+                </nav>
+
+                <footer class="menu-footer">
+                    <p class="footer-quote" id="rotating-quote"></p>
+                </footer>
+            </div>
+        </section>
+
+        <!-- Game Setup Screen -->
+        <section id="setup-screen" class="screen">
+            <div class="setup-container">
+                <button class="back-btn" id="setup-back">← Return</button>
+                
+                <h2 class="setup-title" id="setup-title">Game Setup</h2>
+                
+                <!-- Online Create Options -->
+                <div class="setup-panel" id="online-create-panel">
+                    <div class="room-display">
+                        <p class="room-label">Your Room Code</p>
+                        <div class="room-code" id="room-code">------</div>
+                        <button class="copy-btn" id="copy-room">Copy Code</button>
+                        <button class="share-btn" id="share-link">Share Link</button>
+                    </div>
+                    <div class="waiting-status">
+                        <div class="spinner"></div>
+                        <p>Waiting for opponent to join...</p>
+                    </div>
+                </div>
+                
+                <!-- Online Join Options -->
+                <div class="setup-panel" id="online-join-panel">
+                    <div class="join-form">
+                        <label for="join-code">Enter Room Code</label>
+                        <input type="text" id="join-code" placeholder="Enter 6-character code" maxlength="6" autocomplete="off">
+                        <button class="primary-btn" id="join-game">Join Game</button>
+                    </div>
+                </div>
+                
+                <!-- AI Options -->
+                <div class="setup-panel" id="ai-panel">
+                    <div class="option-group">
+                        <label>Difficulty Level</label>
+                        <div class="difficulty-selector">
+                            <button class="diff-btn" data-level="1">
+                                <span class="diff-name">Raskolnikov</span>
+                                <span class="diff-desc">Beginner</span>
+                            </button>
+                            <button class="diff-btn active" data-level="5">
+                                <span class="diff-name">Myshkin</span>
+                                <span class="diff-desc">Intermediate</span>
+                            </button>
+                            <button class="diff-btn" data-level="10">
+                                <span class="diff-name">Karamazov</span>
+                                <span class="diff-desc">Advanced</span>
+                            </button>
+                            <button class="diff-btn" data-level="15">
+                                <span class="diff-name">The Grand Inquisitor</span>
+                                <span class="diff-desc">Master</span>
+                            </button>
+                            <button class="diff-btn" data-level="20">
+                                <span class="diff-name">Dostoevsky</span>
+                                <span class="diff-desc">Maximum</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <label>Play As</label>
+                        <div class="color-selector">
+                            <button class="color-btn active" data-color="white">
+                                <span class="piece-preview white">♔</span>
+                                <span>White</span>
+                            </button>
+                            <button class="color-btn" data-color="random">
+                                <span class="piece-preview">🎲</span>
+                                <span>Random</span>
+                            </button>
+                            <button class="color-btn" data-color="black">
+                                <span class="piece-preview black">♚</span>
+                                <span>Black</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button class="primary-btn start-game" id="start-ai">Begin the Duel</button>
+                </div>
+                
+                <!-- Timer Options (shared) -->
+                <div class="setup-panel" id="timer-panel">
+                    <div class="option-group">
+                        <label>Time Control</label>
+                        <div class="timer-selector">
+                            <button class="timer-btn" data-time="0">
+                                <span class="timer-name">Untimed</span>
+                                <span class="timer-desc">No clock</span>
+                            </button>
+                            <button class="timer-btn" data-time="60">
+                                <span class="timer-name">Bullet</span>
+                                <span class="timer-desc">1 min</span>
+                            </button>
+                            <button class="timer-btn active" data-time="300">
+                                <span class="timer-name">Blitz</span>
+                                <span class="timer-desc">5 min</span>
+                            </button>
+                            <button class="timer-btn" data-time="600">
+                                <span class="timer-name">Rapid</span>
+                                <span class="timer-desc">10 min</span>
+                            </button>
+                            <button class="timer-btn" data-time="1800">
+                                <span class="timer-name">Classical</span>
+                                <span class="timer-desc">30 min</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button class="primary-btn start-game" id="start-local">Begin the Duel</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Game Screen -->
+        <section id="game-screen" class="screen">
+            <div class="game-container">
+                <!-- Left Panel - Captured & Info -->
+                <aside class="game-panel left-panel">
+                    <div class="player-info opponent-info">
+                        <div class="player-avatar">♚</div>
+                        <div class="player-details">
+                            <span class="player-name" id="opponent-name">Opponent</span>
+                            <div class="captured-pieces" id="opponent-captured"></div>
+                        </div>
+                        <div class="player-timer" id="opponent-timer">--:--</div>
+                    </div>
+                    
+                    <div class="game-status" id="game-status">
+                        <p class="status-text">White to move</p>
+                    </div>
+                    
+                    <div class="dostoevsky-quote-box">
+                        <p id="game-quote">"Man is what he believes."</p>
+                    </div>
+                </aside>
+
+                <!-- Center - Chess Board -->
+                <main class="board-container">
+                    <div class="board-frame">
+                        <div class="board-coordinates top">
+                            <span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span>
+                        </div>
+                        <div class="board-with-coords">
+                            <div class="board-coordinates left">
+                                <span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span>
+                            </div>
+                            <div id="chess-board" class="chess-board"></div>
+                            <div class="board-coordinates right">
+                                <span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span>
+                            </div>
+                        </div>
+                        <div class="board-coordinates bottom">
+                            <span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span>
+                        </div>
+                    </div>
+                    
+                    <div class="board-controls">
+                        <button class="control-btn" id="flip-board" title="Flip Board">🔄</button>
+                        <button class="control-btn" id="undo-move" title="Undo Move">↩</button>
+                        <button class="control-btn" id="offer-draw" title="Offer Draw">🤝</button>
+                        <button class="control-btn" id="resign-game" title="Resign">🏳</button>
+                        <button class="control-btn" id="toggle-sound" title="Toggle Sound">🔊</button>
+                    </div>
+                </main>
+
+                <!-- Right Panel - Move History -->
+                <aside class="game-panel right-panel">
+                    <div class="player-info player-info-self">
+                        <div class="player-avatar">♔</div>
+                        <div class="player-details">
+                            <span class="player-name" id="player-name">You</span>
+                            <div class="captured-pieces" id="player-captured"></div>
+                        </div>
+                        <div class="player-timer" id="player-timer">--:--</div>
+                    </div>
+                    
+                    <div class="moves-panel">
+                        <h3 class="panel-title">Chronicle of Moves</h3>
+                        <div class="moves-list" id="moves-list"></div>
+                    </div>
+                    
+                    <div class="game-actions">
+                        <button class="action-btn" id="export-pgn">Export PGN</button>
+                        <button class="action-btn" id="new-game">New Game</button>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- Promotion Modal -->
+        <div id="promotion-modal" class="modal">
+            <div class="modal-content promotion-content">
+                <h3>Choose Promotion</h3>
+                <div class="promotion-pieces">
+                    <button class="promotion-piece" data-piece="q">♛</button>
+                    <button class="promotion-piece" data-piece="r">♜</button>
+                    <button class="promotion-piece" data-piece="b">♝</button>
+                    <button class="promotion-piece" data-piece="n">♞</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Modal -->
+        <div id="gameover-modal" class="modal">
+            <div class="modal-content gameover-content">
+                <div class="result-icon" id="result-icon">♚</div>
+                <h2 class="result-title" id="result-title">Game Over</h2>
+                <p class="result-reason" id="result-reason">Checkmate</p>
+                <p class="result-quote" id="result-quote">"The darker the night, the brighter the stars."</p>
+                <div class="gameover-actions">
+                    <button class="primary-btn" id="play-again">Play Again</button>
+                    <button class="secondary-btn" id="return-menu">Return to Menu</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading/Connecting Modal -->
+        <div id="loading-modal" class="modal">
+            <div class="modal-content loading-content">
+                <div class="loading-spinner"></div>
+                <p id="loading-text">Connecting...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PeerJS for P2P multiplayer -->
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    
+    <!-- Stockfish WASM -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="js/chess.js"></script>
+    <script src="js/board.js"></script>
+    <script src="js/stockfish.js"></script>
+    <script src="js/multiplayer.js"></script>
+    <script src="js/sounds.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
