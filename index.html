@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Grand Inquisitor's Chess — A Dostoevsky Game</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♚</text></svg>">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Atmospheric Background -->
+    <div class="atmosphere">
+        <div class="fog fog-1"></div>
+        <div class="fog fog-2"></div>
+        <div class="candle-flicker"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="title-container">
+                <h1 class="main-title">The Grand Inquisitor's Chess</h1>
+                <p class="subtitle">«Красота спасёт мир» — Beauty will save the world</p>
+            </div>
+            <div class="quote-banner" id="quoteBanner">
+                <span class="quote-text" id="quoteText">"The soul is healed by being with children... and chess."</span>
+                <span class="quote-author">— Adapted from Dostoevsky</span>
+            </div>
+        </header>
+
+        <!-- Main Menu -->
+        <main class="main-menu" id="mainMenu">
+            <div class="menu-ornament top"></div>
+            
+            <h2 class="menu-title">Choose Your Path</h2>
+            
+            <div class="menu-cards">
+                <div class="menu-card" onclick="startGame('local')">
+                    <div class="card-icon">♟♟</div>
+                    <h3>Brothers Karamazov</h3>
+                    <p>Local two-player match — share the board with a friend beside you</p>
+                    <span class="card-footer">Pass & Play</span>
+                </div>
+                
+                <div class="menu-card" onclick="startGame('ai')">
+                    <div class="card-icon">♚⚔</div>
+                    <h3>Crime & Punishment</h3>
+                    <p>Face the relentless Stockfish — can you escape its judgment?</p>
+                    <span class="card-footer">vs Computer</span>
+                </div>
+                
+                <div class="menu-card" onclick="showOnlineMenu()">
+                    <div class="card-icon">🌐♛</div>
+                    <h3>Notes from Underground</h3>
+                    <p>Connect with distant friends through the mysterious digital void</p>
+                    <span class="card-footer">Online Multiplayer</span>
+                </div>
+                
+                <div class="menu-card" onclick="startGame('analysis')">
+                    <div class="card-icon">📖♞</div>
+                    <h3>The Idiot's Study</h3>
+                    <p>Analyze positions and explore variations with engine assistance</p>
+                    <span class="card-footer">Analysis Board</span>
+                </div>
+            </div>
+
+            <div class="menu-ornament bottom"></div>
+        </main>
+
+        <!-- Online Menu -->
+        <div class="online-menu hidden" id="onlineMenu">
+            <button class="back-btn" onclick="showMainMenu()">← Return to Menu</button>
+            
+            <h2 class="menu-title">Notes from Underground</h2>
+            <p class="online-subtitle">Peer-to-peer connection — no account required</p>
+            
+            <div class="online-options">
+                <div class="online-card" onclick="createOnlineGame()">
+                    <div class="card-icon">📜</div>
+                    <h3>Create Game</h3>
+                    <p>Generate a link to share with your friend</p>
+                </div>
+                
+                <div class="online-card" onclick="showJoinForm()">
+                    <div class="card-icon">🔗</div>
+                    <h3>Join Game</h3>
+                    <p>Enter a game code to join a friend's match</p>
+                </div>
+            </div>
+            
+            <div class="join-form hidden" id="joinForm">
+                <input type="text" id="gameCodeInput" placeholder="Enter game code..." class="game-code-input">
+                <button class="btn-primary" onclick="joinOnlineGame()">Join Game</button>
+            </div>
+            
+            <div class="connection-status hidden" id="connectionStatus">
+                <div class="status-icon">⏳</div>
+                <p class="status-text" id="statusText">Waiting for connection...</p>
+                <div class="game-link-container hidden" id="gameLinkContainer">
+                    <p>Share this code with your friend:</p>
+                    <div class="game-code" id="gameCode"></div>
+                    <button class="btn-copy" onclick="copyGameCode()">Copy Code</button>
+                    <button class="btn-copy" onclick="copyGameLink()">Copy Link</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Settings Modal -->
+        <div class="modal hidden" id="settingsModal">
+            <div class="modal-content">
+                <h2>Game Settings</h2>
+                
+                <div class="setting-group">
+                    <label>Time Control</label>
+                    <select id="timeControl">
+                        <option value="0">Unlimited — Eternal Contemplation</option>
+                        <option value="1">1 min — Bullet — Raskolnikov's Panic</option>
+                        <option value="3">3 min — Blitz — The Underground Man</option>
+                        <option value="5" selected>5 min — Rapid — Alyosha's Pace</option>
+                        <option value="10">10 min — Classical — Ivan's Deliberation</option>
+                        <option value="15">15 min — Correspondence — Father Zosima</option>
+                        <option value="30">30 min — Tournament — The Grand Inquisitor</option>
+                    </select>
+                </div>
+                
+                <div class="setting-group" id="aiSettings">
+                    <label>Stockfish Difficulty</label>
+                    <select id="aiDifficulty">
+                        <option value="1">Level 1 — Sonya's Mercy</option>
+                        <option value="3">Level 3 — Dmitri's Passion</option>
+                        <option value="5">Level 5 — Ivan's Logic</option>
+                        <option value="8">Level 8 — Porfiry's Trap</option>
+                        <option value="10" selected>Level 10 — Smerdyakov's Cunning</option>
+                        <option value="15">Level 15 — The Inquisitor</option>
+                        <option value="20">Level 20 — God Himself</option>
+                    </select>
+                </div>
+                
+                <div class="setting-group" id="colorChoice">
+                    <label>Play As</label>
+                    <div class="color-buttons">
+                        <button class="color-btn active" data-color="white" onclick="selectColor('white')">
+                            <span class="piece-preview">♔</span> White
+                        </button>
+                        <button class="color-btn" data-color="random" onclick="selectColor('random')">
+                            <span class="piece-preview">⚄</span> Random
+                        </button>
+                        <button class="color-btn" data-color="black" onclick="selectColor('black')">
+                            <span class="piece-preview">♚</span> Black
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="modal-buttons">
+                    <button class="btn-secondary" onclick="closeSettings()">Cancel</button>
+                    <button class="btn-primary" onclick="confirmSettings()">Begin Match</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Board Screen -->
+        <div class="game-screen hidden" id="gameScreen">
+            <div class="game-header">
+                <button class="back-btn" onclick="confirmExit()">← Leave Game</button>
+                <div class="game-mode-display" id="gameModeDisplay">Local Game</div>
+                <button class="settings-btn" onclick="toggleGameSettings()">⚙</button>
+            </div>
+            
+            <div class="game-layout">
+                <!-- Left Panel -->
+                <div class="side-panel left-panel">
+                    <div class="captured-pieces" id="capturedBlack">
+                        <h4>Fallen Heroes (Black)</h4>
+                        <div class="pieces-list" id="capturedBlackPieces"></div>
+                    </div>
+                    
+                    <div class="move-history">
+                        <h4>Chronicle of Moves</h4>
+                        <div class="moves-list" id="moveHistory"></div>
+                    </div>
+                    
+                    <div class="game-quote" id="gameQuote">
+                        <p>"Man is a mystery. It needs to be unravelled."</p>
+                    </div>
+                </div>
+                
+                <!-- Chess Board -->
+                <div class="board-container">
+                    <div class="player-info opponent">
+                        <div class="player-avatar">♚</div>
+                        <div class="player-details">
+                            <span class="player-name" id="opponentName">Opponent</span>
+                            <span class="player-rating" id="opponentRating"></span>
+                        </div>
+                        <div class="player-timer" id="opponentTimer">5:00</div>
+                    </div>
+                    
+                    <div class="chess-board" id="chessBoard"></div>
+                    
+                    <div class="player-info self">
+                        <div class="player-avatar">♔</div>
+                        <div class="player-details">
+                            <span class="player-name" id="playerName">You</span>
+                            <span class="player-rating" id="playerRating"></span>
+                        </div>
+                        <div class="player-timer" id="playerTimer">5:00</div>
+                    </div>
+                </div>
+                
+                <!-- Right Panel -->
+                <div class="side-panel right-panel">
+                    <div class="captured-pieces" id="capturedWhite">
+                        <h4>Fallen Heroes (White)</h4>
+                        <div class="pieces-list" id="capturedWhitePieces"></div>
+                    </div>
+                    
+                    <div class="game-controls">
+                        <h4>Actions</h4>
+                        <button class="control-btn" onclick="offerDraw()" id="drawBtn">
+                            <span>🤝</span> Offer Draw
+                        </button>
+                        <button class="control-btn" onclick="resignGame()" id="resignBtn">
+                            <span>🏳️</span> Resign
+                        </button>
+                        <button class="control-btn" onclick="undoMove()" id="undoBtn">
+                            <span>↩️</span> Undo Move
+                        </button>
+                        <button class="control-btn" onclick="flipBoard()">
+                            <span>🔄</span> Flip Board
+                        </button>
+                    </div>
+                    
+                    <div class="engine-panel hidden" id="enginePanel">
+                        <h4>Stockfish Analysis</h4>
+                        <div class="engine-eval" id="engineEval">0.0</div>
+                        <div class="engine-line" id="engineLine">Analyzing...</div>
+                        <div class="eval-bar">
+                            <div class="eval-fill" id="evalFill"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Promotion Modal -->
+            <div class="promotion-modal hidden" id="promotionModal">
+                <div class="promotion-content">
+                    <h3>Choose Promotion</h3>
+                    <div class="promotion-pieces" id="promotionPieces"></div>
+                </div>
+            </div>
+            
+            <!-- Game Over Modal -->
+            <div class="game-over-modal hidden" id="gameOverModal">
+                <div class="game-over-content">
+                    <div class="result-icon" id="resultIcon">👑</div>
+                    <h2 id="resultTitle">Victory!</h2>
+                    <p id="resultMessage">Checkmate — Your opponent has fallen.</p>
+                    <div class="dostoevsky-ending" id="endingQuote">
+                        "Pain and suffering are always inevitable for a large intelligence and a deep heart."
+                    </div>
+                    <div class="game-over-buttons">
+                        <button class="btn-primary" onclick="playAgain()">Play Again</button>
+                        <button class="btn-secondary" onclick="returnToMenu()">Main Menu</button>
+                        <button class="btn-secondary" onclick="analyzeGame()">Analyze Game</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p class="footer-quote">"To go wrong in one's own way is better than to go right in someone else's."</p>
+                <p class="footer-credit">Crafted with suffering and redemption | Powered by Stockfish</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Sound Effects (optional) -->
+    <audio id="moveSound" src="https://images.chesscomfiles.com/chess-themes/sounds/_WEBM_/default/move-self.webm"></audio>
+    <audio id="captureSound" src="https://images.chesscomfiles.com/chess-themes/sounds/_WEBM_/default/capture.webm"></audio>
+    <audio id="checkSound" src="https://images.chesscomfiles.com/chess-themes/sounds/_WEBM_/default/move-check.webm"></audio>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script src="js/stockfish-wrapper.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/multiplayer.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
