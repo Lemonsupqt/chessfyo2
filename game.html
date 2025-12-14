@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dostoevsky Chess - Game in Progress</title>
+    <meta name="description" content="Chess game in progress - inspired by Fyodor Dostoevsky">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="game-body">
+    <div class="stars"></div>
+    
+    <div class="game-container">
+        <header class="game-header">
+            <div class="header-left">
+                <h1 class="game-title">DOSTOEVSKY CHESS</h1>
+                <button class="back-btn" onclick="returnHome()">← Return to Menu</button>
+            </div>
+            <div class="header-right">
+                <div class="game-info">
+                    <span class="game-mode-display" id="gameModeDisplay"></span>
+                    <span class="status-display" id="statusDisplay">White to move</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-game-area">
+            <aside class="left-panel">
+                <div class="quote-panel">
+                    <blockquote class="game-quote" id="gameQuote">
+                        "The mystery of human existence lies not in just staying alive, but in finding something to live for."
+                        <cite>— The Brothers Karamazov</cite>
+                    </blockquote>
+                </div>
+
+                <div class="player-info">
+                    <div class="player-card opponent-card">
+                        <div class="player-color black-piece">♚</div>
+                        <div class="player-details">
+                            <span class="player-name" id="blackPlayerName">Black</span>
+                            <span class="captured-pieces" id="blackCaptured"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-controls">
+                    <button class="control-btn" onclick="undoMove()" id="undoBtn">
+                        <span>↶</span> Undo Move
+                    </button>
+                    <button class="control-btn" onclick="resetGame()" id="resetBtn">
+                        <span>↻</span> New Game
+                    </button>
+                    <button class="control-btn" onclick="toggleBoardOrientation()" id="flipBtn">
+                        <span>⇅</span> Flip Board
+                    </button>
+                </div>
+
+                <div class="ai-controls" id="aiControls" style="display: none;">
+                    <h3>AI Difficulty</h3>
+                    <select id="aiDifficulty" class="input-field" onchange="changeDifficulty()">
+                        <option value="1">Novice (Depth 1)</option>
+                        <option value="3">Beginner (Depth 3)</option>
+                        <option value="5" selected>Intermediate (Depth 5)</option>
+                        <option value="8">Advanced (Depth 8)</option>
+                        <option value="12">Expert (Depth 12)</option>
+                        <option value="15">Master (Depth 15)</option>
+                    </select>
+                    <div class="ai-status" id="aiStatus"></div>
+                </div>
+
+                <div class="multiplayer-info" id="multiplayerInfo" style="display: none;">
+                    <h3>Room Information</h3>
+                    <div class="info-item">
+                        <strong>Room Code:</strong>
+                        <span id="displayRoomCode"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Connection:</strong>
+                        <span id="connectionStatus">Connected</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Your Color:</strong>
+                        <span id="yourColor"></span>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="center-panel">
+                <div class="chess-board-container">
+                    <div id="chessBoard" class="chess-board"></div>
+                    <div class="thinking-indicator" id="thinkingIndicator" style="display: none;">
+                        <div class="spinner"></div>
+                        <span>The machine contemplates its next move...</span>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="right-panel">
+                <div class="move-history">
+                    <h3>Move History</h3>
+                    <div class="moves-list" id="movesList">
+                        <p class="empty-state">The board awaits the first move...</p>
+                    </div>
+                </div>
+
+                <div class="game-notation">
+                    <h3>Current Position</h3>
+                    <div class="notation-display">
+                        <div class="fen-display">
+                            <label>FEN:</label>
+                            <input type="text" id="fenDisplay" readonly class="fen-input">
+                        </div>
+                        <div class="pgn-display">
+                            <label>PGN:</label>
+                            <textarea id="pgnDisplay" readonly class="pgn-input"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-box" id="chatBox" style="display: none;">
+                    <h3>Messages</h3>
+                    <div class="chat-messages" id="chatMessages"></div>
+                    <div class="chat-input-container">
+                        <input type="text" id="chatInput" placeholder="Send a message..." class="input-field">
+                        <button onclick="sendMessage()" class="send-btn">Send</button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <div class="game-over-modal" id="gameOverModal" style="display: none;">
+            <div class="modal-content">
+                <h2 id="gameOverTitle">Game Over</h2>
+                <p id="gameOverMessage"></p>
+                <div class="game-over-quote" id="gameOverQuote"></div>
+                <div class="modal-actions">
+                    <button class="mode-btn" onclick="resetGame()">Play Again</button>
+                    <button class="mode-btn secondary" onclick="returnHome()">Return to Menu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.12.1/chess.min.js"></script>
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script src="chess-engine.js"></script>
+    <script src="multiplayer.js"></script>
+    <script src="stockfish-integration.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
