@@ -6,21 +6,21 @@
 class ChessUI {
     constructor(game) {
         this.game = game;
-        this.boardElement = document.getElementById('chessBoard');
-        this.moveHistoryElement = document.getElementById('moveHistory');
-        this.capturedWhiteElement = document.getElementById('capturedWhitePieces');
-        this.capturedBlackElement = document.getElementById('capturedBlackPieces');
-        this.playerTimerElement = document.getElementById('playerTimer');
-        this.opponentTimerElement = document.getElementById('opponentTimer');
-        this.playerNameElement = document.getElementById('playerName');
-        this.opponentNameElement = document.getElementById('opponentName');
-        this.playerAvatarElement = document.querySelector('.player-info.self .player-avatar');
-        this.opponentAvatarElement = document.querySelector('.player-info.opponent .player-avatar');
+        this.boardElement = null;
+        this.moveHistoryElement = null;
+        this.capturedWhiteElement = null;
+        this.capturedBlackElement = null;
+        this.playerTimerElement = null;
+        this.opponentTimerElement = null;
+        this.playerNameElement = null;
+        this.opponentNameElement = null;
+        this.playerAvatarElement = null;
+        this.opponentAvatarElement = null;
         
         this.soundEnabled = true;
-        this.moveSound = document.getElementById('moveSound');
-        this.captureSound = document.getElementById('captureSound');
-        this.checkSound = document.getElementById('checkSound');
+        this.moveSound = null;
+        this.captureSound = null;
+        this.checkSound = null;
         
         // Dostoevsky quotes for various game events
         this.quotes = {
@@ -78,118 +78,147 @@ class ChessUI {
      * Initialize the UI
      */
     init() {
+        // Get DOM elements
+        this.boardElement = document.getElementById('chessBoard');
+        this.moveHistoryElement = document.getElementById('moveHistory');
+        this.capturedWhiteElement = document.getElementById('capturedWhitePieces');
+        this.capturedBlackElement = document.getElementById('capturedBlackPieces');
+        this.playerTimerElement = document.getElementById('playerTimer');
+        this.opponentTimerElement = document.getElementById('opponentTimer');
+        this.playerNameElement = document.getElementById('playerName');
+        this.opponentNameElement = document.getElementById('opponentName');
+        this.playerAvatarElement = document.querySelector('.player-info.self .player-avatar');
+        this.opponentAvatarElement = document.querySelector('.player-info.opponent .player-avatar');
+        this.moveSound = document.getElementById('moveSound');
+        this.captureSound = document.getElementById('captureSound');
+        this.checkSound = document.getElementById('checkSound');
+        
+        if (!this.boardElement) {
+            console.error('FATAL: Chess board element not found!');
+            return;
+        }
+        
+        console.log('ChessUI initialized, rendering board...');
+        
         this.renderBoard();
         this.updateMoveHistory();
         this.updateCapturedPieces();
         this.showRandomQuote('general');
+        
+        console.log('Board rendered with', this.boardElement.children.length, 'squares');
     }
 
     /**
      * Render the chess board
      */
     renderBoard() {
+        // Get board element if not set
+        if (!this.boardElement) {
+            this.boardElement = document.getElementById('chessBoard');
+        }
+        
+        if (!this.boardElement) {
+            console.error('Chess board element not found!');
+            return;
+        }
+        
+        // Clear previous content
         this.boardElement.innerHTML = '';
         
+        // Get board state
         const board = this.game.getBoard();
-        const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
         const isFlipped = this.game.isFlipped;
-        
         const kingInCheck = this.game.getKingInCheck();
+        const selectedSquare = this.game.selectedSquare;
+        const validMoves = this.game.validMoves || [];
+        const lastMove = this.game.lastMove;
         
-        // Create squares
+        // Create all 64 squares
         for (let i = 0; i < 64; i++) {
             const displayIndex = isFlipped ? 63 - i : i;
             const squareData = board[displayIndex];
+            const sqName = squareData.square;
             
+            // Create square element
             const square = document.createElement('div');
             square.className = `square ${squareData.isLight ? 'light' : 'dark'}`;
-            square.dataset.square = squareData.square;
+            square.dataset.square = sqName;
             
             // Highlight last move
-            if (this.game.lastMove) {
-                if (squareData.square === this.game.lastMove.from || 
-                    squareData.square === this.game.lastMove.to) {
-                    square.classList.add('last-move');
-                }
+            if (lastMove && (sqName === lastMove.from || sqName === lastMove.to)) {
+                square.classList.add('last-move');
             }
             
             // Highlight selected square
-            if (squareData.square === this.game.selectedSquare) {
+            if (sqName === selectedSquare) {
                 square.classList.add('selected');
             }
             
             // Highlight valid moves
-            const validMove = this.game.validMoves.find(m => m.to === squareData.square);
+            const validMove = validMoves.find(m => m.to === sqName);
             if (validMove) {
-                if (validMove.captured || validMove.flags.includes('e')) {
-                    square.classList.add('valid-capture');
-                } else {
-                    square.classList.add('valid-move');
-                }
+                square.classList.add(validMove.captured || (validMove.flags && validMove.flags.includes('e')) 
+                    ? 'valid-capture' 
+                    : 'valid-move');
             }
             
             // Highlight king in check
-            if (kingInCheck && squareData.square === kingInCheck) {
+            if (kingInCheck && sqName === kingInCheck) {
                 square.classList.add('in-check');
             }
             
-            // Add piece
+            // Add piece if present
             if (squareData.piece) {
-                const pieceElement = document.createElement('span');
-                pieceElement.className = 'piece';
-                pieceElement.textContent = ChessGame.getPieceSymbol(squareData.piece);
-                pieceElement.draggable = true;
-                
-                // Drag events
-                pieceElement.addEventListener('dragstart', (e) => {
-                    e.dataTransfer.setData('text/plain', squareData.square);
-                    pieceElement.classList.add('dragging');
-                });
-                
-                pieceElement.addEventListener('dragend', () => {
-                    pieceElement.classList.remove('dragging');
-                });
-                
-                square.appendChild(pieceElement);
+                const pieceSymbol = ChessGame.getPieceSymbol(squareData.piece);
+                if (pieceSymbol) {
+                    const pieceEl = document.createElement('span');
+                    pieceEl.className = 'piece';
+                    pieceEl.textContent = pieceSymbol;
+                    pieceEl.draggable = true;
+                    
+                    pieceEl.ondragstart = (e) => {
+                        e.dataTransfer.setData('text/plain', sqName);
+                        pieceEl.classList.add('dragging');
+                    };
+                    
+                    pieceEl.ondragend = () => {
+                        pieceEl.classList.remove('dragging');
+                    };
+                    
+                    square.appendChild(pieceEl);
+                }
             }
             
             // Add coordinate labels
-            const rank = parseInt(squareData.square[1]);
-            const file = squareData.square[0];
+            const rank = parseInt(sqName[1]);
+            const file = sqName[0];
             
-            // Show rank on leftmost column
+            // Rank labels on a-file (or h-file when flipped)
             if ((isFlipped && file === 'h') || (!isFlipped && file === 'a')) {
-                const rankLabel = document.createElement('span');
-                rankLabel.className = 'rank-label';
-                rankLabel.textContent = rank;
-                square.appendChild(rankLabel);
+                const label = document.createElement('span');
+                label.className = 'rank-label';
+                label.textContent = rank;
+                square.appendChild(label);
             }
             
-            // Show file on bottom row
+            // File labels on rank 1 (or rank 8 when flipped)
             if ((isFlipped && rank === 8) || (!isFlipped && rank === 1)) {
-                const fileLabel = document.createElement('span');
-                fileLabel.className = 'file-label';
-                fileLabel.textContent = file;
-                square.appendChild(fileLabel);
+                const label = document.createElement('span');
+                label.className = 'file-label';
+                label.textContent = file;
+                square.appendChild(label);
             }
             
-            // Click handler
-            square.addEventListener('click', () => {
-                this.handleSquareInteraction(squareData.square);
-            });
-            
-            // Drop handler
-            square.addEventListener('dragover', (e) => {
+            // Event handlers
+            square.onclick = () => this.handleSquareInteraction(sqName);
+            square.ondragover = (e) => e.preventDefault();
+            square.ondrop = (e) => {
                 e.preventDefault();
-            });
-            
-            square.addEventListener('drop', (e) => {
-                e.preventDefault();
-                const fromSquare = e.dataTransfer.getData('text/plain');
-                if (fromSquare !== squareData.square) {
-                    this.handleDrop(fromSquare, squareData.square);
+                const from = e.dataTransfer.getData('text/plain');
+                if (from && from !== sqName) {
+                    this.handleDrop(from, sqName);
                 }
-            });
+            };
             
             this.boardElement.appendChild(square);
         }

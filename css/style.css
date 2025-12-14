@@ -875,45 +875,61 @@ body {
 /* Chess Board */
 .chess-board {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(8, 1fr);
-    width: min(560px, 90vw);
-    height: min(560px, 90vw);
+    grid-template-columns: repeat(8, 70px);
+    grid-template-rows: repeat(8, 70px);
+    width: 560px;
+    height: 560px;
+    max-width: 90vw;
+    max-height: 90vw;
     border: 4px solid var(--gold-dark);
     border-radius: 4px;
     box-shadow: var(--shadow-deep);
     position: relative;
+    background: #4a3728;
+    overflow: hidden;
+}
+
+/* Responsive board */
+@media (max-width: 600px) {
+    .chess-board {
+        grid-template-columns: repeat(8, 1fr);
+        grid-template-rows: repeat(8, 1fr);
+        width: 90vw;
+        height: 90vw;
+    }
 }
 
 .square {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: min(60px, 10vw);
     cursor: pointer;
     position: relative;
     user-select: none;
-    transition: background-color var(--transition-fast);
+    transition: background-color 0.15s ease;
+    box-sizing: border-box;
 }
 
 .square.light {
-    background-color: var(--square-light);
+    background-color: #e8d5b0 !important;
 }
 
 .square.dark {
-    background-color: var(--square-dark);
+    background-color: #4a3728 !important;
 }
 
 .square.light:hover {
-    background-color: var(--square-light-hover);
+    background-color: #f0e0c0 !important;
 }
 
 .square.dark:hover {
-    background-color: var(--square-dark-hover);
+    background-color: #5a4738 !important;
 }
 
 .square.selected {
-    background-color: var(--square-selected) !important;
+    background-color: rgba(212, 175, 55, 0.6) !important;
 }
 
 .square.valid-move::after {
@@ -921,8 +937,9 @@ body {
     position: absolute;
     width: 30%;
     height: 30%;
-    background: var(--square-valid);
+    background: rgba(100, 200, 100, 0.6);
     border-radius: 50%;
+    pointer-events: none;
 }
 
 .square.valid-capture::after {
@@ -930,56 +947,66 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: var(--square-capture);
+    background: rgba(200, 50, 50, 0.4);
     border-radius: 0;
+    pointer-events: none;
 }
 
 .square.last-move {
-    background-color: var(--square-last-move) !important;
+    background-color: rgba(212, 175, 55, 0.4) !important;
 }
 
 .square.in-check {
-    background: radial-gradient(circle, var(--square-check), transparent) !important;
+    background: radial-gradient(circle, rgba(255, 0, 0, 0.6) 0%, transparent 70%) !important;
 }
 
 .square .piece {
-    font-size: inherit;
+    font-size: clamp(32px, 8vw, 56px);
     line-height: 1;
-    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
     transition: transform var(--transition-fast);
+    pointer-events: auto;
+    cursor: grab;
+}
+
+.square .piece:active {
+    cursor: grabbing;
 }
 
 .square .piece.dragging {
-    transform: scale(1.1);
+    transform: scale(1.15);
     cursor: grabbing;
+    opacity: 0.8;
 }
 
 .square .rank-label {
     position: absolute;
-    left: 2px;
-    top: 2px;
-    font-size: 0.7rem;
+    left: 3px;
+    top: 3px;
+    font-size: 11px;
     font-family: var(--font-body);
-    font-weight: 600;
+    font-weight: 700;
+    pointer-events: none;
 }
 
 .square .file-label {
     position: absolute;
-    right: 2px;
-    bottom: 2px;
-    font-size: 0.7rem;
+    right: 3px;
+    bottom: 3px;
+    font-size: 11px;
     font-family: var(--font-body);
-    font-weight: 600;
+    font-weight: 700;
+    pointer-events: none;
 }
 
 .square.light .rank-label,
 .square.light .file-label {
-    color: var(--square-dark);
+    color: #4a3728;
 }
 
 .square.dark .rank-label,
 .square.dark .file-label {
-    color: var(--square-light);
+    color: #e8d5b0;
 }
 
 /* Promotion Modal */

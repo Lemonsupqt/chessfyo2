@@ -14,28 +14,61 @@ let currentMode = null;
 let selectedColor = 'white';
 let pendingGameMode = null;
 
-// DOM Elements
-const mainMenu = document.getElementById('mainMenu');
-const onlineMenu = document.getElementById('onlineMenu');
-const gameScreen = document.getElementById('gameScreen');
-const settingsModal = document.getElementById('settingsModal');
+// DOM Elements - will be set in init()
+let mainMenu;
+let onlineMenu;
+let gameScreen;
+let settingsModal;
 
 /**
  * Initialize the application
  */
 async function init() {
+    console.log('Initializing The Grand Inquisitor\'s Chess...');
+    
+    // Get DOM elements
+    mainMenu = document.getElementById('mainMenu');
+    onlineMenu = document.getElementById('onlineMenu');
+    gameScreen = document.getElementById('gameScreen');
+    settingsModal = document.getElementById('settingsModal');
+    
+    console.log('DOM elements:', {
+        mainMenu: !!mainMenu,
+        onlineMenu: !!onlineMenu,
+        gameScreen: !!gameScreen,
+        settingsModal: !!settingsModal
+    });
+    
+    // Verify Chess.js is loaded
+    if (typeof Chess === 'undefined') {
+        console.error('Chess.js library not loaded!');
+        alert('Failed to load Chess library. Please refresh the page.');
+        return;
+    }
+    
+    // Test chess.js
+    try {
+        const testChess = new Chess();
+        const testPiece = testChess.get('e2');
+        console.log('Chess.js test - piece at e2:', testPiece);
+        console.log('Chess.js test - FEN:', testChess.fen());
+    } catch (e) {
+        console.error('Chess.js test failed:', e);
+    }
+    
     // Initialize chess game
     game = new ChessGame();
     ui = new ChessUI(game);
     
-    // Initialize Stockfish
+    console.log('Game and UI created');
+    
+    // Initialize Stockfish (non-blocking)
     stockfish = new StockfishEngine();
-    try {
-        await stockfish.init();
+    stockfish.init().then(() => {
         console.log('Stockfish initialized');
-    } catch (e) {
-        console.warn('Stockfish initialization failed:', e);
-    }
+    }).catch(e => {
+        console.warn('Stockfish initialization failed (AI mode may not work):', e.message);
+    });
     
     // Initialize multiplayer manager
     multiplayer = new MultiplayerManager();
@@ -48,7 +81,7 @@ async function init() {
         ui.updateQuoteBanner();
     }, 30000);
     
-    console.log('The Grand Inquisitor\'s Chess initialized');
+    console.log('The Grand Inquisitor\'s Chess initialized successfully!');
 }
 
 /**
@@ -151,6 +184,8 @@ function confirmSettings() {
 function launchGame(mode, options = {}) {
     currentMode = mode;
     
+    console.log('Launching game:', mode, options);
+    
     // Hide menus, show game screen
     mainMenu.classList.add('hidden');
     onlineMenu.classList.add('hidden');
@@ -159,7 +194,7 @@ function launchGame(mode, options = {}) {
     // Initialize new game
     game.newGame(mode, options);
     
-    // Update UI
+    // Initialize UI
     ui.init();
     ui.updatePlayerAvatars();
     

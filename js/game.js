@@ -84,14 +84,13 @@ class ChessGame {
         const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
         
         for (let rank = 8; rank >= 1; rank--) {
-            for (let file of files) {
+            for (let f = 0; f < 8; f++) {
+                const file = files[f];
                 const square = file + rank;
                 const piece = this.chess.get(square);
-                board.push({
-                    square,
-                    piece,
-                    isLight: (files.indexOf(file) + rank) % 2 === 1
-                });
+                const isLight = (f + rank) % 2 === 1;
+                
+                board.push({ square, piece, isLight });
             }
         }
         
@@ -466,11 +465,15 @@ class ChessGame {
      * Get piece unicode symbol
      */
     static getPieceSymbol(piece) {
+        if (!piece) return '';
+        
         const symbols = {
             'wp': '♙', 'wn': '♘', 'wb': '♗', 'wr': '♖', 'wq': '♕', 'wk': '♔',
             'bp': '♟', 'bn': '♞', 'bb': '♝', 'br': '♜', 'bq': '♛', 'bk': '♚'
         };
-        return symbols[piece.color + piece.type] || '';
+        
+        const key = (piece.color || '') + (piece.type || '');
+        return symbols[key] || '';
     }
 
     /**
