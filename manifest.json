@@ -1,0 +1,16 @@
+{
+  "name": "Dostoevsky Chess",
+  "short_name": "D-Chess",
+  "description": "A philosophical chess game inspired by Fyodor Dostoevsky",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1a1410",
+  "theme_color": "#d4af37",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

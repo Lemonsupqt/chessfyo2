@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dostoevsky Chess - A Game of Existential Strategy</title>
+    <meta name="description" content="A beautifully crafted multiplayer chess web application inspired by Fyodor Dostoevsky. Play against AI, locally, or online with friends.">
+    <meta name="theme-color" content="#d4af37">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    <span class="title-main">Dostoevsky Chess</span>
+                    <span class="title-sub">A Game of Existential Strategy</span>
+                </h1>
+                <div class="quote-container">
+                    <p class="quote" id="rotating-quote">
+                        "The best way to keep a prisoner from escaping is to make sure he never knows he's in prison."
+                    </p>
+                    <p class="quote-author">— Fyodor Dostoevsky</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Loading Screen -->
+            <div id="loading-screen" class="screen loading-screen">
+                <div class="loading-content">
+                    <div class="spinner"></div>
+                    <p class="loading-text">Loading Dostoevsky Chess...</p>
+                    <p class="loading-quote">"Patience is the mother of will."</p>
+                </div>
+            </div>
+
+            <!-- Mode Selection Screen -->
+            <div id="mode-selection" class="screen active">
+                <div class="mode-container">
+                    <h2 class="section-title">Choose Your Fate</h2>
+                    <div class="mode-buttons">
+                        <button class="mode-btn" data-mode="ai">
+                            <span class="mode-icon">♔</span>
+                            <span class="mode-title">vs Stockfish</span>
+                            <span class="mode-desc">Face the cold logic of the machine</span>
+                        </button>
+                        <button class="mode-btn" data-mode="local">
+                            <span class="mode-icon">♔♚</span>
+                            <span class="mode-title">Local Duel</span>
+                            <span class="mode-desc">Share a board with a friend</span>
+                        </button>
+                        <button class="mode-btn" data-mode="online">
+                            <span class="mode-icon">🌐</span>
+                            <span class="mode-title">Online Match</span>
+                            <span class="mode-desc">Connect across the void</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Online Setup Screen -->
+            <div id="online-setup" class="screen">
+                <div class="setup-container">
+                    <h2 class="section-title">Enter the Network</h2>
+                    <div class="setup-options">
+                        <button class="setup-btn" id="create-game-btn">
+                            <span class="setup-icon">✚</span>
+                            <span class="setup-title">Create Game</span>
+                            <span class="setup-desc">Generate a link to share</span>
+                        </button>
+                        <div class="or-divider">
+                            <span>or</span>
+                        </div>
+                        <div class="join-game">
+                            <input type="text" id="game-id-input" placeholder="Enter Game ID" class="game-id-input">
+                            <button class="setup-btn secondary" id="join-game-btn">
+                                <span class="setup-title">Join Game</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="waiting-room" class="waiting-room hidden">
+                        <div class="spinner"></div>
+                        <p class="waiting-text">Waiting for opponent...</p>
+                        <p class="game-link-label">Share this link:</p>
+                        <div class="game-link-container">
+                            <input type="text" id="game-link" readonly class="game-link">
+                            <button id="copy-link-btn" class="copy-btn">Copy</button>
+                        </div>
+                        <p class="game-id-label">Game ID: <span id="display-game-id"></span></p>
+                    </div>
+                    <button class="back-btn" id="back-from-online">← Back</button>
+                </div>
+            </div>
+
+            <!-- AI Setup Screen -->
+            <div id="ai-setup" class="screen">
+                <div class="setup-container">
+                    <h2 class="section-title">Configure Your Adversary</h2>
+                    <div class="ai-options">
+                        <div class="option-group">
+                            <label class="option-label">Your Color</label>
+                            <div class="color-select">
+                                <button class="color-btn active" data-color="white">
+                                    <span class="piece-icon">♔</span>
+                                    <span>White</span>
+                                </button>
+                                <button class="color-btn" data-color="black">
+                                    <span class="piece-icon">♚</span>
+                                    <span>Black</span>
+                                </button>
+                                <button class="color-btn" data-color="random">
+                                    <span class="piece-icon">?</span>
+                                    <span>Random</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="option-group">
+                            <label class="option-label">Difficulty</label>
+                            <div class="difficulty-select">
+                                <button class="difficulty-btn" data-level="1">Novice</button>
+                                <button class="difficulty-btn" data-level="5">Intermediate</button>
+                                <button class="difficulty-btn active" data-level="10">Advanced</button>
+                                <button class="difficulty-btn" data-level="15">Master</button>
+                                <button class="difficulty-btn" data-level="20">Grandmaster</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setup-actions">
+                        <button class="start-btn" id="start-ai-game">Begin the Struggle</button>
+                        <button class="back-btn" id="back-from-ai">← Back</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Screen -->
+            <div id="game-screen" class="screen">
+                <div class="game-layout">
+                    <!-- Left Sidebar -->
+                    <aside class="game-sidebar left">
+                        <div class="player-info opponent">
+                            <div class="player-header">
+                                <span class="player-icon">♚</span>
+                                <span class="player-name" id="opponent-name">Opponent</span>
+                            </div>
+                            <div class="captured-pieces" id="captured-by-player"></div>
+                            <div class="player-timer" id="opponent-timer">∞</div>
+                        </div>
+                        
+                        <div class="philosophical-quotes">
+                            <p class="game-quote" id="game-quote">
+                                "Pain and suffering are always inevitable for a large intelligence and a deep heart."
+                            </p>
+                        </div>
+                    </aside>
+
+                    <!-- Chess Board -->
+                    <div class="board-container">
+                        <div class="game-status" id="game-status">
+                            <span class="status-text">White to move</span>
+                        </div>
+                        <div id="chess-board" class="chess-board"></div>
+                        <div class="game-controls">
+                            <button class="control-btn" id="resign-btn" title="Resign">
+                                <span>🏳️</span> Resign
+                            </button>
+                            <button class="control-btn" id="draw-btn" title="Offer Draw">
+                                <span>🤝</span> Draw
+                            </button>
+                            <button class="control-btn" id="new-game-btn" title="New Game">
+                                <span>🔄</span> New Game
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right Sidebar -->
+                    <aside class="game-sidebar right">
+                        <div class="player-info player">
+                            <div class="player-header">
+                                <span class="player-icon">♔</span>
+                                <span class="player-name" id="player-name">You</span>
+                            </div>
+                            <div class="captured-pieces" id="captured-by-opponent"></div>
+                            <div class="player-timer" id="player-timer">∞</div>
+                        </div>
+
+                        <div class="move-history">
+                            <h3 class="history-title">Move History</h3>
+                            <div class="moves-list" id="moves-list"></div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Created in the spirit of Fyodor Dostoevsky</p>
+            <p class="footer-quote">"To live without Hope is to Cease to live."</p>
+            <p style="margin-top: 1rem;"><a href="guide.html" style="color: var(--color-accent-gold); text-decoration: none;">📖 View Quick Start Guide</a></p>
+        </footer>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="game-over-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2 class="modal-title" id="game-over-title">Game Over</h2>
+            <p class="modal-message" id="game-over-message"></p>
+            <div class="modal-actions">
+                <button class="modal-btn primary" id="modal-new-game">New Game</button>
+                <button class="modal-btn secondary" id="modal-main-menu">Main Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script src="stockfish.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Start Guide - Dostoevsky Chess</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        .guide-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: var(--spacing-xl);
+        }
+        
+        .guide-section {
+            background: rgba(42, 34, 24, 0.6);
+            border: 2px solid var(--color-accent-gold);
+            border-radius: 10px;
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .guide-section h2 {
+            font-family: var(--font-display);
+            color: var(--color-accent-gold);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .guide-section h3 {
+            color: var(--color-text-primary);
+            margin-top: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .guide-section p, .guide-section li {
+            color: var(--color-text-secondary);
+            line-height: 1.8;
+        }
+        
+        .guide-section ul {
+            margin-left: var(--spacing-lg);
+        }
+        
+        .back-to-game {
+            display: inline-block;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            background: var(--color-accent-gold);
+            color: var(--color-bg-primary);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .back-to-game:hover {
+            background: var(--color-text-primary);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    <span class="title-main">Quick Start Guide</span>
+                    <span class="title-sub">Master the Art of Dostoevsky Chess</span>
+                </h1>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="guide-container">
+                <div style="text-align: center; margin-bottom: var(--spacing-xl);">
+                    <a href="index.html" class="back-to-game">← Back to Game</a>
+                </div>
+
+                <div class="guide-section">
+                    <h2>🎮 Game Modes</h2>
+                    
+                    <h3>vs Stockfish (AI)</h3>
+                    <p>Challenge yourself against the powerful Stockfish chess engine:</p>
+                    <ul>
+                        <li><strong>Novice (Depth 1)</strong>: Perfect for learning the basics</li>
+                        <li><strong>Intermediate (Depth 5)</strong>: Good for casual players</li>
+                        <li><strong>Advanced (Depth 10)</strong>: A real challenge</li>
+                        <li><strong>Master (Depth 15)</strong>: Very difficult, requires strong chess skills</li>
+                        <li><strong>Grandmaster (Depth 20)</strong>: Near-perfect play, extremely challenging</li>
+                    </ul>
+                    
+                    <h3>Local Duel</h3>
+                    <p>Play with a friend on the same device. Perfect for:</p>
+                    <ul>
+                        <li>Face-to-face games</li>
+                        <li>Teaching someone chess</li>
+                        <li>Quick matches without internet</li>
+                    </ul>
+                    
+                    <h3>Online Match</h3>
+                    <p>Play with friends anywhere in the world using peer-to-peer connections:</p>
+                    <ul>
+                        <li><strong>Host:</strong> Click "Create Game" and share the link with your friend</li>
+                        <li><strong>Join:</strong> Enter the Game ID or click the shared link</li>
+                        <li>No account or server needed - completely free!</li>
+                    </ul>
+                </div>
+
+                <div class="guide-section">
+                    <h2>♟️ How to Play</h2>
+                    
+                    <h3>Basic Controls</h3>
+                    <ul>
+                        <li><strong>Make a Move:</strong> Click a piece to select it, then click a destination square</li>
+                        <li><strong>Legal Moves:</strong> Available moves are highlighted when you select a piece</li>
+                        <li><strong>Capture:</strong> Moves that capture opponent pieces show a red circle</li>
+                        <li><strong>Deselect:</strong> Click the selected piece again or click elsewhere</li>
+                    </ul>
+                    
+                    <h3>Special Moves</h3>
+                    <ul>
+                        <li><strong>Castling:</strong> Move your king two squares toward a rook (if legal)</li>
+                        <li><strong>En Passant:</strong> Automatically available when legal</li>
+                        <li><strong>Pawn Promotion:</strong> Automatically promotes to Queen (reaching the end)</li>
+                    </ul>
+                    
+                    <h3>Game Controls</h3>
+                    <ul>
+                        <li><strong>🏳️ Resign:</strong> Surrender the game</li>
+                        <li><strong>🤝 Draw:</strong> Offer or accept a draw</li>
+                        <li><strong>🔄 New Game:</strong> Start a fresh game</li>
+                    </ul>
+                </div>
+
+                <div class="guide-section">
+                    <h2>📊 Game Features</h2>
+                    
+                    <h3>Visual Indicators</h3>
+                    <ul>
+                        <li><strong>Yellow Highlight:</strong> Last move made</li>
+                        <li><strong>Red Background:</strong> King in check</li>
+                        <li><strong>Gold Border:</strong> Currently selected piece</li>
+                        <li><strong>Small Circles:</strong> Legal move destinations</li>
+                        <li><strong>Ring Circles:</strong> Capture moves</li>
+                    </ul>
+                    
+                    <h3>Information Panels</h3>
+                    <ul>
+                        <li><strong>Move History:</strong> Complete record of all moves in algebraic notation</li>
+                        <li><strong>Captured Pieces:</strong> See what pieces have been captured</li>
+                        <li><strong>Game Status:</strong> Shows whose turn it is and check/checkmate alerts</li>
+                        <li><strong>Philosophical Quotes:</strong> Dostoevsky's wisdom to contemplate during play</li>
+                    </ul>
+                </div>
+
+                <div class="guide-section">
+                    <h2>🌐 Online Play Tips</h2>
+                    
+                    <h3>Connection Tips</h3>
+                    <ul>
+                        <li>Both players need a stable internet connection</li>
+                        <li>The connection is direct peer-to-peer (no server involved)</li>
+                        <li>If connection fails, try creating a new game</li>
+                        <li>Works best on modern browsers (Chrome, Firefox, Safari, Edge)</li>
+                    </ul>
+                    
+                    <h3>Sharing Your Game</h3>
+                    <ul>
+                        <li>Copy the game link and send it via messaging app, email, or social media</li>
+                        <li>Or share just the Game ID for your friend to enter manually</li>
+                        <li>The creator (host) always plays as White</li>
+                        <li>The joiner always plays as Black</li>
+                    </ul>
+                </div>
+
+                <div class="guide-section">
+                    <h2>💡 Strategy Tips</h2>
+                    
+                    <h3>Opening Principles</h3>
+                    <ul>
+                        <li>Control the center (e4, d4, e5, d5)</li>
+                        <li>Develop your knights and bishops early</li>
+                        <li>Castle early to protect your king</li>
+                        <li>Don't move the same piece twice in the opening</li>
+                    </ul>
+                    
+                    <h3>General Strategy</h3>
+                    <ul>
+                        <li>Protect your pieces and king</li>
+                        <li>Look for tactical opportunities (forks, pins, skewers)</li>
+                        <li>Think about your opponent's threats before making a move</li>
+                        <li>In the endgame, activate your king</li>
+                    </ul>
+                    
+                    <h3>Against Stockfish</h3>
+                    <ul>
+                        <li>Start with lower difficulties and work your way up</li>
+                        <li>Focus on solid, principled play rather than tricks</li>
+                        <li>Study your games - see where you went wrong</li>
+                        <li>Don't get discouraged - even Novice level can be challenging!</li>
+                    </ul>
+                </div>
+
+                <div class="guide-section">
+                    <h2>🎨 The Dostoevsky Theme</h2>
+                    <p>
+                        This chess application is inspired by the profound philosophical and psychological depth 
+                        of Fyodor Dostoevsky's literary works. Just as Dostoevsky explored the complexities of 
+                        human nature, morality, and free will, chess represents a battle of minds where every 
+                        decision carries weight and consequence.
+                    </p>
+                    <p style="font-style: italic; margin-top: var(--spacing-md);">
+                        "The soul is healed by being with children" may not directly apply to chess, but 
+                        "Pain and suffering are always inevitable for a large intelligence and a deep heart" 
+                        certainly does when you blunder your queen!
+                    </p>
+                </div>
+
+                <div style="text-align: center; margin-top: var(--spacing-xl);">
+                    <a href="index.html" class="back-to-game">← Back to Game</a>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Created in the spirit of Fyodor Dostoevsky</p>
+            <p class="footer-quote">"To live without Hope is to Cease to live."</p>
+        </footer>
+    </div>
+</body>
+</html>
