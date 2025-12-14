@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Brothers' Gambit - Dostoevsky Chess</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">The Brothers' Gambit</h1>
+            <p class="subtitle">A Game of Intellect and Redemption</p>
+        </header>
+
+        <!-- Main Menu -->
+        <div id="mainMenu" class="menu-screen">
+            <div class="menu-content">
+                <div class="menu-title">Choose Your Path</div>
+                <button class="menu-btn" onclick="showModeSelection()">
+                    <span class="btn-icon">♟️</span>
+                    <span class="btn-text">New Game</span>
+                </button>
+                <button class="menu-btn" onclick="showJoinRoom()">
+                    <span class="btn-icon">🔗</span>
+                    <span class="btn-text">Join Room</span>
+                </button>
+                <button class="menu-btn" onclick="showSettings()">
+                    <span class="btn-icon">⚙️</span>
+                    <span class="btn-text">Settings</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mode Selection -->
+        <div id="modeSelection" class="menu-screen hidden">
+            <div class="menu-content">
+                <div class="menu-title">Select Game Mode</div>
+                <button class="menu-btn" onclick="startGame('ai')">
+                    <span class="btn-icon">🤖</span>
+                    <span class="btn-text">Play Against AI</span>
+                </button>
+                <button class="menu-btn" onclick="startGame('local')">
+                    <span class="btn-icon">👥</span>
+                    <span class="btn-text">Local Multiplayer</span>
+                </button>
+                <button class="menu-btn" onclick="startGame('online')">
+                    <span class="btn-icon">🌐</span>
+                    <span class="btn-text">Online Multiplayer</span>
+                </button>
+                <button class="menu-btn secondary" onclick="showMainMenu()">
+                    <span class="btn-text">Back</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Join Room -->
+        <div id="joinRoom" class="menu-screen hidden">
+            <div class="menu-content">
+                <div class="menu-title">Join a Room</div>
+                <input type="text" id="roomCodeInput" class="room-input" placeholder="Enter room code" maxlength="6">
+                <button class="menu-btn" onclick="joinRoom()">
+                    <span class="btn-text">Join</span>
+                </button>
+                <button class="menu-btn secondary" onclick="showMainMenu()">
+                    <span class="btn-text">Back</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Settings -->
+        <div id="settings" class="menu-screen hidden">
+            <div class="menu-content">
+                <div class="menu-title">Settings</div>
+                <div class="setting-item">
+                    <label>AI Difficulty</label>
+                    <select id="aiDifficulty" class="setting-select">
+                        <option value="1">Easy</option>
+                        <option value="2" selected>Medium</option>
+                        <option value="3">Hard</option>
+                        <option value="4">Master</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>Board Theme</label>
+                    <select id="boardTheme" class="setting-select">
+                        <option value="classic" selected>Classic</option>
+                        <option value="dark">Dark</option>
+                        <option value="sepia">Sepia</option>
+                    </select>
+                </div>
+                <button class="menu-btn secondary" onclick="showMainMenu()">
+                    <span class="btn-text">Back</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="game-screen hidden">
+            <!-- Game Info Bar -->
+            <div class="game-info-bar">
+                <div class="game-info-left">
+                    <div class="player-info">
+                        <span class="player-label">White:</span>
+                        <span id="whitePlayer" class="player-name">Player 1</span>
+                    </div>
+                    <div class="player-info">
+                        <span class="player-label">Black:</span>
+                        <span id="blackPlayer" class="player-name">Player 2</span>
+                    </div>
+                </div>
+                <div class="game-info-right">
+                    <div id="roomCodeDisplay" class="room-code hidden">
+                        <span>Room: </span>
+                        <span id="roomCodeText"></span>
+                        <button class="copy-btn" onclick="copyRoomCode()">📋</button>
+                    </div>
+                    <button class="icon-btn" onclick="showMainMenu()" title="Menu">☰</button>
+                </div>
+            </div>
+
+            <!-- Game Board Container -->
+            <div class="board-container">
+                <div id="chessboard" class="chessboard"></div>
+                <div class="game-sidebar">
+                    <div class="move-history">
+                        <h3>Move History</h3>
+                        <div id="moveHistory" class="move-list"></div>
+                    </div>
+                    <div class="game-controls">
+                        <button class="control-btn" onclick="undoMove()" title="Undo move (Ctrl+Z)">↶ Undo</button>
+                        <button class="control-btn" onclick="resetGame()" title="Reset game (Ctrl+R)">🔄 Reset</button>
+                        <button class="control-btn" onclick="flipBoard()" title="Flip board (F)">🔄 Flip</button>
+                        <button class="control-btn" onclick="shareGame()" title="Share game state">📤 Share</button>
+                    </div>
+                    <div id="gameStatus" class="game-status"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quote Display -->
+        <div class="quote-display">
+            <p id="quoteText" class="quote-text">"The mystery of human existence lies not in just staying alive, but in finding something to live for."</p>
+            <p class="quote-author">— Fyodor Dostoevsky</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chess.js@1.0.0-beta.6/chess.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/chessboard-1.0.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/chessboard-1.0.0.min.css">
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
