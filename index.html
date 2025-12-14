@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dostoevsky Chess - A Game of Suffering and Strategy</title>
+    <meta name="description" content="A beautifully themed multiplayer chess game inspired by Fyodor Dostoevsky. Play locally, challenge Stockfish AI, or play online with friends.">
+    <meta name="keywords" content="chess, dostoevsky, multiplayer, stockfish, online chess, web chess game">
+    <meta name="author" content="Dostoevsky Chess">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Dostoevsky Chess - Where Every Move is a Moral Choice">
+    <meta property="og:description" content="Play chess with a literary twist. Three game modes: local, AI, and online multiplayer.">
+    <meta property="og:image" content="favicon.svg">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Dostoevsky Chess">
+    <meta name="twitter:description" content="A chess game inspired by the works of Fyodor Dostoevsky">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="landing-container">
+        <header class="main-header">
+            <h1 class="title">DOSTOEVSKY CHESS</h1>
+            <p class="subtitle">Where Every Move is a Moral Choice</p>
+        </header>
+
+        <div class="quote-container">
+            <blockquote class="dostoevsky-quote">
+                "Pain and suffering are always inevitable for a large intelligence and a deep heart."
+                <cite>— Crime and Punishment</cite>
+            </blockquote>
+        </div>
+
+        <div class="game-modes">
+            <div class="mode-card" data-mode="local">
+                <div class="mode-icon">♟</div>
+                <h2>Local Game</h2>
+                <p>Face your adversary across the board, as Raskolnikov faced his conscience</p>
+                <button class="mode-btn" onclick="startGame('local')">Begin the Duel</button>
+            </div>
+
+            <div class="mode-card" data-mode="ai">
+                <div class="mode-icon">♜</div>
+                <h2>Challenge Stockfish</h2>
+                <p>Wrestle with the machine, as man wrestles with fate</p>
+                <button class="mode-btn" onclick="startGame('ai')">Face the Algorithm</button>
+            </div>
+
+            <div class="mode-card" data-mode="online">
+                <div class="mode-icon">♚</div>
+                <h2>Online Multiplayer</h2>
+                <p>Connect with distant souls in the eternal struggle</p>
+                <button class="mode-btn" onclick="showMultiplayerOptions()">Enter the Network</button>
+            </div>
+        </div>
+
+        <div class="multiplayer-modal" id="multiplayerModal" style="display: none;">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeMultiplayerModal()">&times;</span>
+                <h2>Choose Your Path</h2>
+                
+                <div class="multiplayer-options">
+                    <div class="option-section">
+                        <h3>Create a New Game</h3>
+                        <p>Become the host, and await your opponent</p>
+                        <input type="text" id="playerName" placeholder="Your name" class="input-field">
+                        <button class="mode-btn" onclick="createRoom()">Create Room</button>
+                    </div>
+
+                    <div class="divider">OR</div>
+
+                    <div class="option-section">
+                        <h3>Join an Existing Game</h3>
+                        <p>Enter the room code shared by your friend</p>
+                        <input type="text" id="joinPlayerName" placeholder="Your name" class="input-field">
+                        <input type="text" id="roomCode" placeholder="Room code" class="input-field">
+                        <button class="mode-btn" onclick="joinRoom()">Join the Battle</button>
+                    </div>
+                </div>
+
+                <div id="roomInfo" class="room-info" style="display: none;">
+                    <h3>Room Created</h3>
+                    <p>Share this code with your friend:</p>
+                    <div class="room-code-display" id="roomCodeDisplay"></div>
+                    <p class="waiting-text">Waiting for opponent to join...</p>
+                </div>
+            </div>
+        </div>
+
+        <footer class="main-footer">
+            <div class="footer-quote">
+                "The darker the night, the brighter the stars, the deeper the grief, the closer is God!"
+                <cite>— Crime and Punishment</cite>
+            </div>
+            <p class="credits">A tribute to Fyodor Dostoevsky • Built with Suffering and Chess.js</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

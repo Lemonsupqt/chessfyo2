@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4af37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c49a1a;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="48" fill="#0a0a0f" stroke="url(#goldGradient)" stroke-width="3"/>
+  
+  <!-- Chess king piece (simplified) -->
+  <g transform="translate(50, 50)">
+    <!-- Crown -->
+    <path d="M -15,-25 L -10,-20 L -5,-25 L 0,-20 L 5,-25 L 10,-20 L 15,-25 L 15,-15 L -15,-15 Z" 
+          fill="url(#goldGradient)"/>
+    <!-- Cross on top -->
+    <rect x="-2" y="-35" width="4" height="12" fill="url(#goldGradient)"/>
+    <rect x="-6" y="-31" width="12" height="4" fill="url(#goldGradient)"/>
+    <!-- Body -->
+    <rect x="-12" y="-15" width="24" height="20" rx="2" fill="url(#goldGradient)"/>
+    <!-- Base -->
+    <ellipse cx="0" cy="10" rx="18" ry="5" fill="url(#goldGradient)"/>
+  </g>
+  
+  <!-- Decorative elements -->
+  <circle cx="20" cy="20" r="1.5" fill="#d4af37" opacity="0.6"/>
+  <circle cx="80" cy="20" r="1.5" fill="#d4af37" opacity="0.6"/>
+  <circle cx="20" cy="80" r="1.5" fill="#d4af37" opacity="0.6"/>
+  <circle cx="80" cy="80" r="1.5" fill="#d4af37" opacity="0.6"/>
+</svg>
