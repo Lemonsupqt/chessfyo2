@@ -1,0 +1,16 @@
+{
+  "name": "The Brothers Chess",
+  "short_name": "BrothersChess",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#140f0b",
+  "theme_color": "#2a1e16",
+  "description": "A fully static Dostoevsky-themed chess web app: hotseat, Stockfish AI, and online P2P play via WebRTC copy/paste.",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ]
+}

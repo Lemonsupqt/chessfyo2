@@ -1,0 +1,4 @@
+core
+*.core
+npm-debug.log*
+.DS_Store

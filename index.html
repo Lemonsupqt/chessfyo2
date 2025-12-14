@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#2a1e16" />
+
+    <title>The Brothers Chess — a Dostoevsky-themed chess parlour</title>
+    <meta
+      name="description"
+      content="A fully static Dostoevsky-themed chess web app: hotseat, Stockfish AI, and online P2P play via WebRTC copy/paste."
+    />
+
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand__title">The Brothers Chess</div>
+        <div class="brand__subtitle">A sepia parlour for friends, rivals, and ghosts</div>
+      </div>
+      <div class="topbar__right">
+        <button id="btnNewGame" class="btn">New game</button>
+        <button id="btnFlip" class="btn btn--ghost" title="Flip board">Flip</button>
+        <label class="switch" title="Toggle sound">
+          <input id="toggleSound" type="checkbox" />
+          <span>Sound</span>
+        </label>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="boardPane">
+        <div class="quote" id="quote"></div>
+
+        <div class="boardFrame">
+          <div class="boardHeader">
+            <div class="status" id="status">Loading…</div>
+            <div class="mini">
+              <span class="tag" id="modeTag">Mode</span>
+              <span class="tag" id="turnTag">Turn</span>
+            </div>
+          </div>
+
+          <div class="boardWrap">
+            <div id="board" class="board" aria-label="Chess board" role="grid"></div>
+            <div id="promotion" class="promotion" hidden>
+              <div class="promotion__card">
+                <div class="promotion__title">Promotion</div>
+                <div class="promotion__choices">
+                  <button class="btn" data-promo="q">Queen</button>
+                  <button class="btn" data-promo="r">Rook</button>
+                  <button class="btn" data-promo="b">Bishop</button>
+                  <button class="btn" data-promo="n">Knight</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="clockRow">
+            <div class="clock" id="clockBlack">
+              <div class="clock__label">Black</div>
+              <div class="clock__time" id="timeBlack">—</div>
+            </div>
+            <div class="clock" id="clockWhite">
+              <div class="clock__label">White</div>
+              <div class="clock__time" id="timeWhite">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="utilityRow">
+          <button id="btnUndo" class="btn btn--ghost">Undo</button>
+          <button id="btnCopyFEN" class="btn btn--ghost">Copy FEN</button>
+          <button id="btnCopyPGN" class="btn btn--ghost">Copy PGN</button>
+        </div>
+      </section>
+
+      <aside class="sidePane">
+        <section class="card">
+          <h2>Mode</h2>
+          <div class="row">
+            <label class="field">
+              <span>Choose</span>
+              <select id="modeSelect">
+                <option value="hotseat">Hotseat (same device)</option>
+                <option value="ai">Against AI (Stockfish)</option>
+                <option value="online">Online with a friend (P2P)</option>
+                <option value="puzzle">Daily puzzle</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="row" id="aiControls" hidden>
+            <label class="field">
+              <span>AI strength</span>
+              <input id="aiLevel" type="range" min="1" max="20" value="10" />
+            </label>
+            <label class="field">
+              <span>You play</span>
+              <select id="aiColor">
+                <option value="w">White</option>
+                <option value="b">Black</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="row" id="clockControls">
+            <label class="field">
+              <span>Clock</span>
+              <select id="clockPreset">
+                <option value="off">Off</option>
+                <option value="300+0">5+0</option>
+                <option value="300+3">5+3</option>
+                <option value="600+0">10+0</option>
+                <option value="900+10">15+10</option>
+              </select>
+            </label>
+            <div class="hint">Clock is local in Hotseat; synced in Online via move messages.</div>
+          </div>
+
+          <div class="row" id="onlineControls" hidden>
+            <div class="hint">
+              This is true P2P (no server). One player hosts and shares the offer; the other pastes it and returns the answer.
+            </div>
+            <div class="row row--2">
+              <button id="btnHost" class="btn">Host (create offer)</button>
+              <button id="btnJoin" class="btn">Join (make answer)</button>
+            </div>
+
+            <label class="field">
+              <span>Offer / Answer JSON</span>
+              <textarea id="signalBox" rows="6" spellcheck="false" placeholder="Paste offer here to join, or paste answer here to host…"></textarea>
+            </label>
+
+            <div class="row row--2">
+              <button id="btnCopySignal" class="btn btn--ghost">Copy</button>
+              <button id="btnApplySignal" class="btn">Apply</button>
+            </div>
+
+            <div class="row">
+              <label class="field">
+                <span>You are</span>
+                <select id="onlineRole">
+                  <option value="w">White</option>
+                  <option value="b">Black</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="hint" id="connState">Not connected.</div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Moves</h2>
+          <ol id="moveList" class="moveList"></ol>
+        </section>
+
+        <section class="card">
+          <h2>Chat</h2>
+          <div id="chatLog" class="chatLog" aria-live="polite"></div>
+          <div class="row row--2">
+            <input id="chatInput" class="text" type="text" placeholder="Write a message…" />
+            <button id="btnSendChat" class="btn">Send</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>PGN</h2>
+          <label class="field">
+            <span>Import PGN</span>
+            <textarea id="pgnInput" rows="5" spellcheck="false" placeholder="Paste PGN here and press Load…"></textarea>
+          </label>
+          <div class="row row--2">
+            <button id="btnLoadPGN" class="btn btn--ghost">Load</button>
+            <button id="btnClearPGN" class="btn btn--ghost">Clear</button>
+          </div>
+        </section>
+
+        <section class="card" id="puzzleCard" hidden>
+          <h2>Daily puzzle</h2>
+          <div class="hint" id="puzzleInfo">—</div>
+          <div class="row row--2">
+            <button id="btnPuzzleReset" class="btn btn--ghost">Reset</button>
+            <button id="btnPuzzleReveal" class="btn">Reveal</button>
+          </div>
+          <div class="hint" id="puzzleSolution" hidden></div>
+        </section>
+
+        <footer class="footer">
+          <div class="small">Static by design. No accounts. No servers. Just positions and persuasion.</div>
+        </footer>
+      </aside>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
