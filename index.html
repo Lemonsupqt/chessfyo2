@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dostoevsky Chess - Notes from the 64 Squares</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* Inline critical CSS to prevent FOUC */
+        body {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            font-family: 'Cormorant Garamond', serif;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="loading-overlay">
+        <div class="spinner">Loading...</div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Dostoevsky Chess</h1>
+            <p class="subtitle">"Man is a mystery. It needs to be unravelled..."</p>
+        </header>
+
+        <div id="main-menu" class="menu-screen">
+            <div class="menu-options">
+                <button id="btn-ai" class="menu-btn">
+                    <span class="btn-title">The Grand Inquisitor</span>
+                    <span class="btn-desc">Challenge the Machine (Stockfish)</span>
+                </button>
+                <button id="btn-local" class="menu-btn">
+                    <span class="btn-title">The Double</span>
+                    <span class="btn-desc">Pass & Play (Local Multiplayer)</span>
+                </button>
+                <button id="btn-online-host" class="menu-btn">
+                    <span class="btn-title">Notes from Underground</span>
+                    <span class="btn-desc">Host Online Game</span>
+                </button>
+                <button id="btn-online-join" class="menu-btn">
+                    <span class="btn-title">The Idiot</span>
+                    <span class="btn-desc">Join Online Game</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="game-screen" class="hidden">
+            <div class="game-layout">
+                <div class="player-info opponent">
+                    <div class="avatar"></div>
+                    <div class="details">
+                        <span id="opponent-name">Opponent</span>
+                        <div id="opponent-status" class="status"></div>
+                    </div>
+                </div>
+
+                <div id="board"></div>
+
+                <div class="player-info self">
+                    <div class="avatar"></div>
+                    <div class="details">
+                        <span id="player-name">You</span>
+                        <div id="player-status" class="status"></div>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button id="btn-flip"><i class="fas fa-retweet"></i> Flip Board</button>
+                    <button id="btn-resign"><i class="fas fa-flag"></i> Resign</button>
+                    <button id="btn-menu"><i class="fas fa-home"></i> Menu</button>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="game-status">
+                    <h3>Status</h3>
+                    <div id="status-text">White to move</div>
+                    <div id="quote-display" class="quote-box"></div>
+                </div>
+                
+                <div class="pgn-container">
+                    <h3>History</h3>
+                    <div id="pgn"></div>
+                </div>
+                
+                <div id="chat-container" class="hidden">
+                    <h3>Correspondence</h3>
+                    <div id="chat-messages"></div>
+                    <input type="text" id="chat-input" placeholder="Write a message...">
+                </div>
+
+                <div id="online-setup" class="hidden">
+                    <h3>Connection</h3>
+                    <div id="host-id-display" class="hidden">
+                        <p>Share this ID with your friend:</p>
+                        <code id="my-peer-id">...</code>
+                        <button id="btn-copy-id"><i class="fas fa-copy"></i></button>
+                    </div>
+                    <div id="join-input-display" class="hidden">
+                        <input type="text" id="join-peer-id" placeholder="Enter Host ID">
+                        <button id="btn-connect">Connect</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Libraries -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js" integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="js/theme.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/net.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

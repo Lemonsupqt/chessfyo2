@@ -1,0 +1,252 @@
+:root {
+    --bg-color: #1a1a1a;
+    --paper-color: #f0e6d2;
+    --text-color: #2c241b;
+    --text-light: #e0e0e0;
+    --accent-color: #8b0000; /* Dark Red */
+    --highlight-color: #d4a373;
+    --board-light: #f0d9b5;
+    --board-dark: #b58863;
+    --font-main: 'Cormorant Garamond', serif;
+    --font-display: 'Playfair Display', serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    background-image: url('https://www.transparenttextures.com/patterns/black-linen.png'); /* Subtle texture */
+    color: var(--paper-color);
+    font-family: var(--font-main);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.container {
+    max-width: 1200px;
+    width: 95%;
+    margin: 20px auto;
+    text-align: center;
+}
+
+header h1 {
+    font-family: var(--font-display);
+    font-size: 3em;
+    margin-bottom: 0.2em;
+    color: var(--paper-color);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.subtitle {
+    font-style: italic;
+    font-size: 1.2em;
+    opacity: 0.8;
+    margin-bottom: 2em;
+}
+
+/* Menu */
+.menu-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.menu-btn {
+    background: transparent;
+    border: 1px solid var(--paper-color);
+    color: var(--paper-color);
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-main);
+}
+
+.menu-btn:hover {
+    background: rgba(240, 230, 210, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.btn-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    display: block;
+    font-family: var(--font-display);
+}
+
+.btn-desc {
+    font-size: 1em;
+    opacity: 0.7;
+}
+
+/* Game Screen */
+#game-screen {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.game-layout {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 400px; /* Constrain the game area */
+}
+
+#board {
+    width: 100%;
+    max-width: 400px;
+}
+
+.sidebar {
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+    background: rgba(0,0,0,0.3);
+    padding: 20px;
+    border: 1px solid rgba(240, 230, 210, 0.2);
+    text-align: left;
+    height: 500px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Board Customization */
+.board-b72b1 {
+    border: 5px solid #4a3b2a;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* Player Info */
+.player-info {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+}
+
+.opponent {
+    justify-content: flex-start;
+}
+
+.self {
+    justify-content: flex-start;
+}
+
+.details {
+    text-align: left;
+}
+
+.status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: grey;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.status.online { background-color: green; }
+.status.thinking { background-color: yellow; }
+
+/* Controls */
+.controls {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.controls button {
+    background: transparent;
+    border: 1px solid var(--paper-color);
+    color: var(--paper-color);
+    padding: 8px 15px;
+    cursor: pointer;
+    font-family: var(--font-main);
+    font-size: 1em;
+}
+
+.controls button:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+/* Sidebar Elements */
+.game-status h3, .pgn-container h3 {
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding-bottom: 5px;
+    margin-top: 0;
+    font-family: var(--font-display);
+}
+
+.quote-box {
+    margin: 15px 0;
+    padding: 10px;
+    background: rgba(0,0,0,0.2);
+    border-left: 3px solid var(--accent-color);
+    font-style: italic;
+    font-size: 1.1em;
+    min-height: 60px;
+}
+
+#pgn {
+    font-family: monospace;
+    font-size: 0.9em;
+    white-space: pre-wrap;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+#chat-messages {
+    height: 150px;
+    overflow-y: auto;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+#chat-input {
+    width: 100%;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: var(--paper-color);
+    padding: 5px;
+}
+
+code {
+    background: rgba(255,255,255,0.1);
+    padding: 2px 5px;
+    border-radius: 3px;
+    user-select: all;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+    #game-screen {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .sidebar {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+    }
+}
