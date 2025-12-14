@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dostoevsky Chess - A Game of Suffering and Strategy</title>
+    <meta name="description" content="Play chess with friends or AI in a beautiful Dostoevsky-themed interface. Features online multiplayer, Stockfish engine, and philosophical quotes.">
+    <meta name="keywords" content="chess, dostoevsky, online chess, multiplayer chess, stockfish, chess game, russian literature">
+    <meta name="author" content="Dostoevsky Chess">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourusername.github.io/dostoevsky-chess/">
+    <meta property="og:title" content="Dostoevsky Chess - A Game of Suffering and Strategy">
+    <meta property="og:description" content="Play chess with friends or AI in a beautiful Dostoevsky-themed interface. Features online multiplayer and philosophical quotes.">
+    <meta property="og:image" content="https://yourusername.github.io/dostoevsky-chess/preview.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://yourusername.github.io/dostoevsky-chess/">
+    <meta property="twitter:title" content="Dostoevsky Chess">
+    <meta property="twitter:description" content="Play chess with friends or AI in a beautiful Dostoevsky-themed interface.">
+    <meta property="twitter:image" content="https://yourusername.github.io/dostoevsky-chess/preview.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%231a1410' width='100' height='100'/%3E%3Ctext x='50' y='70' font-size='60' text-anchor='middle' fill='%23d4af37'%3E♟%3C/text%3E%3C/svg%3E">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#d4af37">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Dostoevsky Chess">
+    
+    <!-- Fonts -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="snow-container"></div>
+    
+    <div class="main-container">
+        <!-- Main Menu -->
+        <div id="mainMenu" class="menu-screen active">
+            <div class="title-container">
+                <h1 class="main-title">DOSTOEVSKY CHESS</h1>
+                <p class="subtitle">"The mystery of human existence lies not in just staying alive, but in finding something to live for."</p>
+            </div>
+            
+            <div class="menu-buttons">
+                <button class="menu-btn" onclick="showModeSelection()">
+                    <span class="btn-icon">♟</span>
+                    <span class="btn-text">New Game</span>
+                </button>
+                <button class="menu-btn" onclick="showJoinGame()">
+                    <span class="btn-icon">⚔</span>
+                    <span class="btn-text">Join Friend</span>
+                </button>
+                <button class="menu-btn" onclick="showAbout()">
+                    <span class="btn-icon">📖</span>
+                    <span class="btn-text">About</span>
+                </button>
+            </div>
+            
+            <div class="quote-container">
+                <p id="randomQuote" class="random-quote"></p>
+            </div>
+        </div>
+
+        <!-- Mode Selection -->
+        <div id="modeSelection" class="menu-screen">
+            <div class="title-container">
+                <h2 class="screen-title">Choose Your Path</h2>
+                <p class="subtitle">"Man is sometimes extraordinarily, passionately, in love with suffering."</p>
+            </div>
+            
+            <div class="menu-buttons">
+                <button class="menu-btn mode-btn" onclick="startGame('ai-easy')">
+                    <span class="btn-icon">🤖</span>
+                    <div class="btn-content">
+                        <span class="btn-text">vs Stockfish (Easy)</span>
+                        <span class="btn-desc">Face the machine - beginner level</span>
+                    </div>
+                </button>
+                <button class="menu-btn mode-btn" onclick="startGame('ai-medium')">
+                    <span class="btn-icon">🎭</span>
+                    <div class="btn-content">
+                        <span class="btn-text">vs Stockfish (Medium)</span>
+                        <span class="btn-desc">A worthy adversary</span>
+                    </div>
+                </button>
+                <button class="menu-btn mode-btn" onclick="startGame('ai-hard')">
+                    <span class="btn-icon">⚡</span>
+                    <div class="btn-content">
+                        <span class="btn-text">vs Stockfish (Hard)</span>
+                        <span class="btn-desc">Embrace the suffering</span>
+                    </div>
+                </button>
+                <button class="menu-btn mode-btn" onclick="startGame('online')">
+                    <span class="btn-icon">🌐</span>
+                    <div class="btn-content">
+                        <span class="btn-text">vs Friend Online</span>
+                        <span class="btn-desc">Share a link and play together</span>
+                    </div>
+                </button>
+                <button class="menu-btn mode-btn" onclick="startGame('local')">
+                    <span class="btn-icon">👥</span>
+                    <div class="btn-content">
+                        <span class="btn-text">Local Multiplayer</span>
+                        <span class="btn-desc">Pass and play on one device</span>
+                    </div>
+                </button>
+                <button class="menu-btn back-btn" onclick="showMainMenu()">
+                    <span class="btn-text">← Back</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Join Game Screen -->
+        <div id="joinGame" class="menu-screen">
+            <div class="title-container">
+                <h2 class="screen-title">Join a Friend</h2>
+                <p class="subtitle">"To love someone means to see them as God intended them."</p>
+            </div>
+            
+            <div class="join-container">
+                <input type="text" id="roomCodeInput" class="room-input" placeholder="Enter room code...">
+                <button class="menu-btn" onclick="joinRoom()">
+                    <span class="btn-text">Join Game</span>
+                </button>
+                <button class="menu-btn back-btn" onclick="showMainMenu()">
+                    <span class="btn-text">← Back</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- About Screen -->
+        <div id="aboutScreen" class="menu-screen">
+            <div class="title-container">
+                <h2 class="screen-title">About Dostoevsky Chess</h2>
+                <p class="subtitle">"Beauty will save the world."</p>
+            </div>
+            
+            <div class="about-content">
+                <p>A chess game inspired by the profound works of Fyodor Dostoevsky, exploring themes of morality, suffering, and human nature through the ancient game of strategy.</p>
+                
+                <h3>Features:</h3>
+                <ul>
+                    <li>Play against Stockfish AI (3 difficulty levels)</li>
+                    <li>Online multiplayer with friends via P2P connection</li>
+                    <li>Local pass-and-play mode</li>
+                    <li>Beautiful Dostoevsky-themed interface</li>
+                    <li>Philosophical quotes from the master himself</li>
+                </ul>
+                
+                <h3>How to Play Online:</h3>
+                <ol>
+                    <li>Select "vs Friend Online" mode</li>
+                    <li>Share the room code with your friend</li>
+                    <li>Your friend enters the code to join</li>
+                    <li>Engage in battle!</li>
+                </ol>
+                
+                <button class="menu-btn back-btn" onclick="showMainMenu()">
+                    <span class="btn-text">← Back</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="game-screen">
+            <div class="game-header">
+                <div class="game-info">
+                    <h3 id="gameMode" class="game-mode"></h3>
+                    <p id="gameStatus" class="game-status">White to move</p>
+                </div>
+                <div class="game-controls">
+                    <button class="control-btn" onclick="showRoomCode()" id="shareBtn" style="display:none;">
+                        <span>📋 Share Code</span>
+                    </button>
+                    <button class="control-btn" onclick="undoMove()" id="undoBtn">
+                        <span>↶ Undo</span>
+                    </button>
+                    <button class="control-btn" onclick="resignGame()">
+                        <span>🏳 Resign</span>
+                    </button>
+                    <button class="control-btn" onclick="returnToMenu()">
+                        <span>← Menu</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="game-content">
+                <div class="game-left">
+                    <div class="player-info player-black">
+                        <div class="player-avatar">♚</div>
+                        <div class="player-details">
+                            <span class="player-name" id="blackPlayerName">Black</span>
+                            <span class="captured-pieces" id="blackCaptured"></span>
+                        </div>
+                    </div>
+
+                    <div id="chessboard" class="chessboard"></div>
+
+                    <div class="player-info player-white">
+                        <div class="player-avatar">♔</div>
+                        <div class="player-details">
+                            <span class="player-name" id="whitePlayerName">White</span>
+                            <span class="captured-pieces" id="whiteCaptured"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-right">
+                    <div class="quote-panel">
+                        <h4>Dostoevsky's Wisdom</h4>
+                        <p id="gameQuote" class="game-quote"></p>
+                    </div>
+
+                    <div class="moves-panel">
+                        <h4>Move History</h4>
+                        <div id="moveHistory" class="move-history"></div>
+                    </div>
+
+                    <div class="connection-status" id="connectionStatus" style="display:none;">
+                        <span id="statusText"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for game end -->
+    <div id="gameEndModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle"></h2>
+            <p id="modalMessage"></p>
+            <div class="modal-buttons">
+                <button class="menu-btn" onclick="rematch()">Play Again</button>
+                <button class="menu-btn back-btn" onclick="returnToMenu()">Main Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    
+    <!-- Game Scripts -->
+    <script src="stockfish.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
